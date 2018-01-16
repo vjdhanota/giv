@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Subscription = sequelize.define('Subscription', {
+  var Subscriptions = sequelize.define('Subscriptions', {
     charity_ein: DataTypes.INTEGER,
     type: DataTypes.STRING,
     frequency: DataTypes.INTEGER,
@@ -12,5 +12,5 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
-  return Subscription;
+  return Subscriptions; 
 };
