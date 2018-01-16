@@ -1,0 +1,8 @@
+{
+    "env": {
+        "node": true, 
+        "es6": true 
+    },
+    "parser": "babel-eslint", // needed to make babel stuff work properly
+    "extends": "airbnb"
+}
