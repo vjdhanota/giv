@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "expo": "^23.0.4",
+    "express": "^4.16.2",
     "mysql2": "^1.5.1",
     "react": "16.0.0",
     "react-native": "0.50.3",
