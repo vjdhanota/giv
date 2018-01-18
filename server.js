@@ -4,7 +4,7 @@ const app = express();
 const models = require('./models');
 
 app.get('/', (req, res, next) => {
-  models.Subscriptions.findAll().then((sub) => {
+  models.Subscription.findAll().then((sub) => {
     console.log(sub);
   });
 });
