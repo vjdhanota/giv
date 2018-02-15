@@ -2,15 +2,9 @@
   "name": "giv",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000/",
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
-    "eslint": "^4.15.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1",
     "jest-expo": "23.0.0",
-    "prettier-eslint": "^8.7.4",
     "react-native-scripts": "1.8.1",
     "react-test-renderer": "16.0.0"
   },
