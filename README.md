@@ -1,6 +1,6 @@
 # giv
 
-git clone https://github.com/vjdhanota/giv.git
+git clone https://github.com/vjdhanota/giv.git \n
 cd giv
 yarn
 cd client && yarn
