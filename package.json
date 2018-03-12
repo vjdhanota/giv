@@ -4,10 +4,10 @@
   "private": true,
   "proxy": "http://localhost:5000/",
   "devDependencies": {
+    "concurrently": "^3.5.0",
     "jest-expo": "23.0.0",
     "react-native-scripts": "1.8.1",
-    "react-test-renderer": "16.0.0",
-    "concurrently": "^3.5.0"
+    "react-test-renderer": "16.0.0"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -18,14 +18,20 @@
     "test": "node node_modules/jest/bin/jest.js --watch",
     "client": "cd client && npm start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn client\" \"yarn server\""
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "curl": "^0.1.4",
+    "expo": "^25.0.0",
     "express": "^4.16.2",
     "mysql2": "^1.5.1",
+    "node-fetch-json": "0.0.3",
+    "raccoon": "^0.2.8",
+    "request": "^2.83.0",
     "sequelize": "^4.31.2",
     "sequelize-cli": "^3.2.0"
   }
