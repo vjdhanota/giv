@@ -10,7 +10,7 @@ import {bootstrap} from './src/config/bootstrap';
 import track from './src/config/analytics';
 import {data} from './src/data'
 import {AppLoading, Font} from 'expo';
-import {View} from "react-native";
+import {View, Text} from "react-native";
 
 bootstrap();
 data.populateData();
@@ -48,7 +48,23 @@ const KittenApp = StackNavigator({
 
 export default class App extends React.Component {
   state = {
-    loaded: false
+    loaded: false,
+    response: ""
+  };
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({ response: res }))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch("http://localhost:5000/user");
+    const body = await response.json();
+    console.log(body);
+    if (response.status !== 200) throw Error(body.message);
+
+    return JSON.stringify(body);
   };
 
   componentWillMount() {
@@ -69,6 +85,12 @@ export default class App extends React.Component {
   };
 
   render() {
+    return (
+      <Text styles={this.styles}>
+      JDIWAjdiajdiawjdiawjdiajdaiejfeaifjaei
+        {this.state.response}
+      </Text>
+    );
     if (!this.state.loaded) {
       return <AppLoading />;
     }
