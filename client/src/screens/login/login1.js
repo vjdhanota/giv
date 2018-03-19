@@ -16,11 +16,18 @@ import {
 import {FontAwesome} from '../../assets/icons';
 import {GradientButton} from '../../components/gradientButton';
 import {scale, scaleModerate, scaleVertical} from '../../utils/scale';
+import { AsyncStorage } from 'react-native';
 
 export class LoginV1 extends React.Component {
   static navigationOptions = {
     header: null,
   };
+  state = {
+    loginInfo: {
+      email: "",
+      password: ""
+    } 
+  }
 
   constructor(props) {
     super(props);
@@ -40,6 +47,19 @@ export class LoginV1 extends React.Component {
     return image;
   }
 
+  handleLoginSubmit = async () => {
+    const response = await fetch(`http://localhost:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+      try {
+        await AsyncStorage.setItem('user_id', body.id.toString());
+      } catch (err) {
+        console.log(err);
+      }
+     this.props.navigation.navigate('SignUp');
+    
+  }
+
   render() {
     let image = this._renderImage();
 
@@ -50,22 +70,9 @@ export class LoginV1 extends React.Component {
         style={styles.screen}>
         {image}
         <View style={styles.container}>
-          <View style={styles.buttons}>
-            <RkButton style={styles.button} rkType='social'>
-              <RkText rkType='awesome hero accentColor'>{FontAwesome.twitter}</RkText>
-            </RkButton>
-            <RkButton style={styles.button} rkType='social'>
-              <RkText rkType='awesome hero accentColor'>{FontAwesome.google}</RkText>
-            </RkButton>
-            <RkButton style={styles.button} rkType='social'>
-              <RkText rkType='awesome hero accentColor'>{FontAwesome.facebook}</RkText>
-            </RkButton>
-          </View>
-          <RkTextInput rkType='rounded' placeholder='Username'/>
-          <RkTextInput rkType='rounded' placeholder='Password' secureTextEntry={true}/>
-          <GradientButton onPress={() => {
-            this.props.navigation.goBack()
-          }} rkType='large' style={styles.save} text='LOGIN'/>
+          <RkTextInput rkType='rounded' placeholder='Email' onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, email: event.nativeEvent.text}})}/>
+          <RkTextInput rkType='rounded' placeholder='Password' secureTextEntry={true} onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, password: event.nativeEvent.text}})}/>
+          <GradientButton onPress={this.handleLoginSubmit} rkType='large' style={styles.save} text='LOGIN'/>
           <View style={styles.footer}>
             <View style={styles.textRow}>
               <RkText rkType='primary3'>Don’t have an account?</RkText>

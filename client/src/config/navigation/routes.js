@@ -87,91 +87,17 @@ export const MainRoutes = [
   },
   {
     id: 'ArticlesMenu',
-    title: 'Articles',
+    title: 'Browse',
     icon: FontIcons.article,
-    screen: Screens.ArticleMenu,
+    screen: Screens.Articles4,
     children: [
-      {
-        id: 'Articles1',
-        title: 'Article List V1',
-        screen: Screens.Articles1,
-        children: []
-      },
-      {
-        id: 'Articles2',
-        title: 'Article List V2',
-        screen: Screens.Articles2,
-        children: []
-      },
-      {
-        id: 'Articles3',
-        title: 'Article List V3',
-        screen: Screens.Articles3,
-        children: []
-      },
-      {
-        id: 'Articles4',
-        title: 'Article List V4',
-        screen: Screens.Articles4,
-        children: []
-      },
-      {
-        id: 'Blogposts',
-        title: 'Blogposts',
-        screen: Screens.Blogposts,
-        children: []
-      },
-      {
-        id: 'Article',
-        title: 'Article View',
-        screen: Screens.Article,
-        children: []
-      }
     ]
-  },
-  {
-    id: 'MessagingMenu',
-    title: 'Messaging',
-    icon: FontIcons.mail,
-    screen: Screens.MessagingMenu,
-    children: [
-      {
-        id: 'Chat',
-        title: 'Chat',
-        screen: Screens.Chat,
-        children: []
-      },
-      {
-        id: 'ChatList',
-        title: 'Chat List',
-        screen: Screens.ChatList,
-        children: []
-      },
-      {
-        id: 'Comments',
-        title: 'Comments',
-        screen: Screens.Comments,
-        children: []
-      },
-    ]
-  },
-  {
-    id: 'DashboardsMenu',
-    title: 'Dashboards',
-    icon: FontIcons.dashboard,
-    screen: Screens.DashboardMenu,
-    children: [{
-      id: 'Dashboard',
-      title: 'Dashboard',
-      screen: Screens.Dashboard,
-      children: []
-    },]
   },
   {
     id: 'WalkthroughMenu',
-    title: 'Walkthroughs',
+    title: 'Reccomended',
     icon: FontIcons.mobile,
-    screen: Screens.WalkthroughMenu,
+    screen: Screens.ArticlesRec,
     children: [{
       id: 'Walkthrough',
       title: 'Walkthrough',
@@ -200,39 +126,6 @@ export const MainRoutes = [
         children: []
       },
 
-    ]
-  },
-  {
-    id: 'NavigationMenu',
-    icon: FontIcons.navigation,
-    title: 'Navigation',
-    screen: Screens.NavigationMenu,
-    children: [
-      {
-        id: 'GridV1',
-        title: 'Grid Menu V1',
-        screen: Screens.GridV1,
-        children: []
-      },
-      {
-        id: 'GridV2',
-        title: 'Grid Menu V2',
-        screen: Screens.GridV2,
-        children: []
-      },
-      {
-        id: 'List',
-        title: 'List Menu',
-        screen: Screens.ListMenu,
-        children: []
-      },
-      {
-        id: 'Side',
-        title: 'Side Menu',
-        action: 'DrawerOpen',
-        screen: Screens.SideMenu,
-        children: []
-      }
     ]
   },
   {

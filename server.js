@@ -31,6 +31,29 @@ app.get('/user', (req, res, next) => {
   models.User.findAll().then(user => res.send(user));
 });
 
+app.get('/user/sign-up/:info', (req, res, next) => {
+  const loginObject = JSON.parse(req.params.info);
+  models.User.findOrCreate({where: {
+    name: loginObject.name,
+    password: loginObject.password,
+    email: loginObject.email,
+    phone: "201-231-1412",
+    address: "1 Washington Sq.",
+    favorites: "Aids",
+  }}).then((user) => {
+    res.send(user);
+  })
+  
+});
+app.get('/user/sign-in/:info', (req, res, next) => {
+  const loginObject = JSON.parse(req.params.info);
+  models.User.findOne({where: {
+    password: loginObject.password,
+    email: loginObject.email,
+  }}).then( (user) => {
+    res.send(user);
+  })
+});
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
