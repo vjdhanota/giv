@@ -54,7 +54,8 @@ export class Contacts extends React.Component {
     return (
       <TouchableOpacity >
       <RkCard rkType='horizontal' style={styles.card}>
-      {/*<Avatar rkType='circle' style={styles.avatar} img={row.cause.image}/>*/}
+      {/*<Avatar rkType='circle' style={styles.avatar} img={row.cause.image}/>
+      <Image rkCardImg source={row.cause.image}/>*/}
 
         <View rkCardContent >
           <RkText numberOfLines={2} rkType='header6' >{name}</RkText>
@@ -139,7 +140,8 @@ let styles = RkStyleSheet.create(theme => ({
   },
   card: {
     marginVertical: 8,
-    height: 150
+    height: 150,
+    width: 390
   },
   post: {
     marginTop: 13
