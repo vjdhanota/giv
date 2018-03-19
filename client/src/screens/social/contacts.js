@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Image
 } from 'react-native';
 import _ from 'lodash';
 import {
@@ -49,12 +50,16 @@ export class Contacts extends React.Component {
     let name = `${row.charityName}` ;
     let tagLine = `${row.tagLine}`; 
     let rating = `${row.currentRating.rating}`;
+    let cause = `${row.cause.causeName}`;
     return (
       <TouchableOpacity >
       <RkCard rkType='horizontal' style={styles.card}>
+      {/*<Avatar rkType='circle' style={styles.avatar} img={row.cause.image}/>*/}
+
         <View rkCardContent >
           <RkText numberOfLines={2} rkType='header6' >{name}</RkText>
-          <RkText style={styles.post} numberOfLines={2} rkType='secondary1'>{tagLine}</RkText>
+          <RkText style={styles.post} numberOfLines={3} rkType='secondary1'>{tagLine}</RkText>
+          <RkText style={styles.post} numberOfLines={3} rkType='secondary1'>{cause}</RkText>
           <RkText rkType='secondary6 hintColor'>Charity Rating: {rating}</RkText>
           <SocialBar rkType='space' showLabel={true}/>
       </View>
