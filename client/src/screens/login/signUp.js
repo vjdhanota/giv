@@ -14,20 +14,41 @@ import {
 } from 'react-native-ui-kitten';
 import {GradientButton} from '../../components/';
 import {scale, scaleModerate, scaleVertical} from '../../utils/scale';
+import { AsyncStorage } from 'react-native';
 
 export class SignUp extends React.Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
+
+  state = {
+    loginInfo: {
+      name: "",
+      email: "",
+      password: ""
+    }
+  }
 
   constructor(props) {
     super(props);
+    this.print();
   }
-
+  print = async () => {
+    console.log(await AsyncStorage.getItem('user_id'));
+  }
+  handleSignUp = async () => {
+    const response = await fetch(`http://localhost:5000/user/sign-up/${JSON.stringify(this.state.loginInfo)}`);
+    //const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("before")
+    // await AsyncStorage.setItem('user_id', this.state.loginInfo.email);   
+    // console.log("HERE" + await AsyncStorage.getItem('user_id'));
+  }
   render() {
     let renderIcon = () => {
-      if (RkTheme.current.name === 'light')
+      if (RkTheme.current.name === 'light'){
         return <Image style={styles.image} source={require('../../assets/images/logo.png')}/>;
+      }
       return <Image style={styles.image} source={require('../../assets/images/logoDark.png')}/>
     };
     return (
@@ -41,13 +62,11 @@ export class SignUp extends React.Component {
         </View>
         <View style={styles.content}>
           <View>
-            <RkTextInput rkType='rounded' placeholder='Name'/>
-            <RkTextInput rkType='rounded' placeholder='Email'/>
-            <RkTextInput rkType='rounded' placeholder='Password' secureTextEntry={true}/>
+            <RkTextInput rkType='rounded' placeholder='Name' onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, name: event.nativeEvent.text}})}/>
+            <RkTextInput rkType='rounded' placeholder='Email' onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, email: event.nativeEvent.text}})}/>
+            <RkTextInput rkType='rounded' placeholder='Password' secureTextEntry={true} onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, password: event.nativeEvent.text}})}/>
             <RkTextInput rkType='rounded' placeholder='Confirm Password' secureTextEntry={true}/>
-            <GradientButton style={styles.save} rkType='large' text='SIGN UP' onPress={() => {
-              this.props.navigation.goBack()
-            }}/>
+            <GradientButton style={styles.save} rkType='large' text='SIGN UP' onPress={this.handleSignUp}/>
           </View>
           <View style={styles.footer}>
             <View style={styles.textRow}>

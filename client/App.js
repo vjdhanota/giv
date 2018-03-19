@@ -11,6 +11,14 @@ import track from './src/config/analytics';
 import {data} from './src/data'
 import {AppLoading, Font} from 'expo';
 import {View, Text} from "react-native";
+import {FontAwesome} from './src/assets/icons';
+
+import {
+  RkStyleSheet,
+  RkText,
+  RkTextInput
+} from 'react-native-ui-kitten';
+import {GradientButton} from './src/components/';
 
 bootstrap();
 data.populateData();
@@ -49,8 +57,13 @@ const KittenApp = StackNavigator({
 export default class App extends React.Component {
   state = {
     loaded: false,
-    response: ""
+    response: "",
+    currentSearch: ""
   };
+
+  constructor(props) {
+    super(props)
+  }
 
   componentDidMount() {
     this.callApi()
@@ -61,7 +74,6 @@ export default class App extends React.Component {
   callApi = async () => {
     const response = await fetch("http://localhost:5000/user");
     const body = await response.json();
-    console.log(body);
     if (response.status !== 200) throw Error(body.message);
 
     return JSON.stringify(body);
@@ -84,16 +96,32 @@ export default class App extends React.Component {
     this.setState({loaded: true});
   };
 
+  handleSearchSubmit = () => {
+    try {
+       AsyncStorage.setItem('@MySuperStore:key', this.state.currentSearch);
+    } catch (error) {
+      // Error saving data
+    }
+    StackNavigator.navigate('SignUp')  
+  }
   render() {
-    return (
-      <Text styles={this.styles}>
-      JDIWAjdiajdiawjdiawjdiajdaiejfeaifjaei
-        {this.state.response}
-      </Text>
-    );
     if (!this.state.loaded) {
       return <AppLoading />;
     }
+
+    // return (
+    // <View style={styles.view}>
+
+    //   <RkTextInput autoCapitalize='none'
+    //                  autoCorrect={false}
+    //                  onChange={(event) => this.setState({currentSearch: event.nativeEvent.text})}
+    //                  onSubmit={this.handleSearchSubmit}
+    //                   // label={<RkText rkType='awesome'>{FontAwesome.search}</RkText>}
+    //                  rkType='row'
+    //                  placeholder='Search'/>
+    // <GradientButton rkType='large' text='SIGN UP' onPress={this.handleSearchSubmit}/>
+    // </View>
+    // );
 
     return (
       <View style={{flex: 1}}>
@@ -111,5 +139,11 @@ export default class App extends React.Component {
     );
   }
 }
+
+let styles = RkStyleSheet.create(theme => ({
+  view: {
+    marginTop: "30%"
+  }
+}));
 
 Expo.registerRootComponent(App);
