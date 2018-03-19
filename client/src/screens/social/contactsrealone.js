@@ -3,33 +3,31 @@ import {
   ListView,
   View,
   StyleSheet,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native';
 import _ from 'lodash';
 import {
   RkStyleSheet,
   RkText,
-  RkTextInput,
-  RkCard
+  RkTextInput
 } from 'react-native-ui-kitten';
 import {data} from '../../data';
 import {Avatar} from '../../components/avatar';
 import {FontAwesome} from '../../assets/icons';
-import {SocialBar} from '../../components';
 
 export class Contacts extends React.Component {
   static navigationOptions = {
-    title: 'SEARCH'.toUpperCase()
+    title: 'Contacts'.toUpperCase()
   };
 
   constructor(props) {
     super(props);
 
-    this.charityarticles = data.getcharityArticles();
+    this.users = data.getUsers();
 
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      data: ds.cloneWithRows(this.charityarticles)
+      data: ds.cloneWithRows(this.users)
     };
 
     this.filter = this._filter.bind(this);
@@ -46,22 +44,14 @@ export class Contacts extends React.Component {
   }
 
   _renderRow(row) {
-    let name = `${row.charityName}` ;
-    let tagLine = `${row.tagLine}`; 
-    let rating = `${row.currentRating.rating}`;
+    let name = `${row.firstName} ${row.lastName}`;
     return (
-      <TouchableOpacity >
-      <RkCard rkType='horizontal' style={styles.card}>
-        <View rkCardContent >
-          <RkText numberOfLines={2} rkType='header6' >{name}</RkText>
-          <RkText style={styles.post} numberOfLines={2} rkType='secondary1'>{tagLine}</RkText>
-          <RkText rkType='secondary6 hintColor'>Charity Rating: {rating}</RkText>
-          <SocialBar rkType='space' showLabel={true}/>
-      </View>
-      <View rkCardFooter>
-      </View>
-    </RkCard>
-    </TouchableOpacity>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('ProfileV1', {id: row.id})}>
+        <View style={styles.container}>
+          <Avatar rkType='circle' style={styles.avatar} img={row.photo}/>
+          <RkText>{name}</RkText>
+        </View>
+      </TouchableOpacity>
     )
   }
 
@@ -86,20 +76,20 @@ export class Contacts extends React.Component {
 
   _filter(text) {
     let pattern = new RegExp(text, 'i');
-    let charityarticles = _.filter(this.charityarticles, (charityarticles) => {
+    let users = _.filter(this.users, (user) => {
 
-      if (charityarticles.charityName.search(pattern) != -1
-        || charityarticles.tagLine.search(pattern) != -1 )
-        return charityarticles;
+      if (user.firstName.search(pattern) != -1
+        || user.lastName.search(pattern) != -1)
+        return user;
     });
 
-    this.setData(charityarticles);
+    this.setData(users);
   }
 
   render() {
     return (
       <ListView
-        style={styles.container}
+        style={styles.root}
         dataSource={this.state.data}
         renderRow={this.renderRow}
         renderSeparator={this.renderSeparator}
@@ -110,13 +100,8 @@ export class Contacts extends React.Component {
 }
 
 let styles = RkStyleSheet.create(theme => ({
-  
-  
-  container: {
-    backgroundColor: theme.colors.screen.scroll,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    flexDirection: 'row',
+  root: {
+    backgroundColor: theme.colors.screen.base
   },
   searchContainer: {
     backgroundColor: theme.colors.screen.bold,
@@ -125,18 +110,17 @@ let styles = RkStyleSheet.create(theme => ({
     height: 60,
     alignItems: 'center'
   },
+  container: {
+    flexDirection: 'row',
+    padding: 16,
+    alignItems: 'center'
+  },
   avatar: {
     marginRight: 16
   },
   separator: {
     flex: 1,
     height: StyleSheet.hairlineWidth,
-  },
-  card: {
-    marginVertical: 8,
-    height: 150
-  },
-  post: {
-    marginTop: 13
+    backgroundColor: theme.colors.border.base
   }
 }));

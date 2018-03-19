@@ -89,7 +89,7 @@ export const MainRoutes = [
     id: 'ArticlesMenu',
     title: 'Browse',
     icon: FontIcons.article,
-    screen: Screens.Articles4,
+    screen: Screens.Contacts,
     children: [
     ]
   },

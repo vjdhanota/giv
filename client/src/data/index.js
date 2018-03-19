@@ -1,5 +1,6 @@
 import populate from './dataGenerator'
 import users from './raw/users'
+import charityarticles from './raw/charityarticles'
 import articles from './raw/articles'
 import notifications from './raw/notifications'
 import conversations from './raw/conversations'
@@ -18,6 +19,10 @@ class DataProvider {
 
   getNotifications() {
     return notifications;
+  }
+  //to obtain charity card
+  getcharityArticles() {
+    return charityarticles;
   }
 
   getArticles(type = 'article') {
