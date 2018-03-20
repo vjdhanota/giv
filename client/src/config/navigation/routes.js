@@ -90,7 +90,12 @@ export const MainRoutes = [
     title: 'Browse',
     icon: FontIcons.article,
     screen: Screens.Articles4,
-    children: [
+    children: [{
+      id: 'Browse',
+      title: 'Browse',
+      screen: Screens.Articles4,
+      children: []
+    }
     ]
   },
   {
@@ -153,9 +158,9 @@ export const MainRoutes = [
 
 let menuRoutes = _.cloneDeep(MainRoutes);
 menuRoutes.unshift({
-  id: 'GridV2',
+  id: 'LoginV1',
   title: 'Start',
-  screen: Screens.GridV2,
+  screen: Screens.LoginV1,
   children: []
 },);
 
