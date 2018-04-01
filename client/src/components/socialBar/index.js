@@ -26,8 +26,8 @@ export class SocialBar extends RkComponent {
     this.shares = this.props.shares || 5;
     this.state = {
       likes: this.likes,
-      comments: this.comments,
-      shares: this.shares,
+      //comments: this.comments,
+      //shares: this.shares,
     }
   }
 
@@ -35,8 +35,8 @@ export class SocialBar extends RkComponent {
     let {container, section, icon, label} = this.defineStyles();
 
     let likes = this.state.likes + (this.props.showLabel ? ' Likes' : '');
-    let comments = this.state.comments + (this.props.showLabel ? ' Comments' : '');
-    let shares = this.state.shares + (this.props.showLabel ? ' Shares' : '');
+    //let comments = this.state.comments + (this.props.showLabel ? ' Comments' : '');
+    //let shares = this.state.shares + (this.props.showLabel ? ' Shares' : '');
 
     let updateLikes = () => {
       if (this.state.likes === this.likes)
@@ -45,7 +45,7 @@ export class SocialBar extends RkComponent {
         this.setState({likes: this.likes});
     };
 
-    let updateComments = () => {
+    /*let updateComments = () => {
       if (this.state.comments === this.comments)
         this.setState({comments: this.state.comments + 1});
       else
@@ -57,7 +57,7 @@ export class SocialBar extends RkComponent {
         this.setState({shares: this.state.shares + 1});
       else
         this.setState({shares: this.shares});
-    };
+    };*/
 
 
     return (
@@ -68,7 +68,7 @@ export class SocialBar extends RkComponent {
             <RkText rkType='primary primary4' style={label}>{likes}</RkText>
           </RkButton>
         </View>
-        <View style={section}>
+       {/*<View style={section}>
           <RkButton rkType='clear' onPress={updateComments}>
             <RkText rkType='awesome hintColor' style={icon}>{FontAwesome.comment}</RkText>
             <RkText rkType='primary4 hintColor' style={label}>{comments}</RkText>
@@ -79,7 +79,7 @@ export class SocialBar extends RkComponent {
             <RkText rkType='awesome hintColor' style={icon}>{FontAwesome.user}</RkText>
             <RkText rkType='primary4 hintColor' style={label}>{shares}</RkText>
           </RkButton>
-        </View>
+        </View>*/}
       </View>
     )
   }

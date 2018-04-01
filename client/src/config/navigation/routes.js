@@ -95,6 +95,18 @@ export const MainRoutes = [
       title: 'Browse',
       screen: Screens.Articles4,
       children: []
+    
+    
+  },
+]
+  },
+  {
+    screen: Screens.Contacts,
+    children: [{
+      id:'Contacts',
+      title: 'Contacts',
+      screen: Screens.Contacts,
+      children:[]
     }
     ]
   },
