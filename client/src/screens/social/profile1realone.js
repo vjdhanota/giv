@@ -35,17 +35,22 @@ export class ProfileV1 extends React.Component {
         </View>
         <View style={[styles.userInfo, styles.bordered]}>
           <View style={styles.section}>
-            <RkText rkType='header6' style={styles.space}>{this.user.email}</RkText>
-            <RkText rkType='secondary1 hintColor'>Contact</RkText>
+            <RkText rkType='header3' style={styles.space}>{this.user.postCount}</RkText>
+            <RkText rkType='secondary1 hintColor'>Posts</RkText>
           </View>
           <View style={styles.section}>
             <RkText rkType='header3' style={styles.space}>{formatNumber(this.user.followersCount)}</RkText>
-            <RkText rkType='secondary1 hintColor'>Charities</RkText>
+            <RkText rkType='secondary1 hintColor'>Followers</RkText>
+          </View>
+          <View style={styles.section}>
+            <RkText rkType='header3' style={styles.space}>{this.user.followingCount}</RkText>
+            <RkText rkType='secondary1 hintColor'>Following</RkText>
           </View>
         </View>
         <View style={styles.buttons}>
-          <RkButton style={styles.button} rkType='clear link'>Subscriptions</RkButton>
+          <RkButton style={styles.button} rkType='clear link'>FOLLOW</RkButton>
           <View style={styles.separator}/>
+          <RkButton style={styles.button} rkType='clear link'>MESSAGE</RkButton>
         </View>
         <Gallery items={images}/>
       </ScrollView>

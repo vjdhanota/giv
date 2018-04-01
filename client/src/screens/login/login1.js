@@ -44,7 +44,7 @@ export class LoginV1 extends React.Component {
     else
       image = (<Image style={[styles.image, {height, width}]}
                       source={require('../../assets/images/backgroundLoginV1DarkTheme.png')}/>);
-    return image;
+    //return image;
   }
 
   handleLoginSubmit = async () => {
@@ -57,7 +57,7 @@ export class LoginV1 extends React.Component {
         console.log(err);
       }
       //this is browse page
-     this.props.navigation.navigate('Browse');
+     this.props.navigation.navigate('Contacts');
     
   }
 
@@ -71,6 +71,7 @@ export class LoginV1 extends React.Component {
         style={styles.screen}>
         {image}
         <View style={styles.container}>
+          <RkText rkType='light' style={styles.hero}>giv</RkText>
           <RkTextInput rkType='rounded' placeholder='Email' onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, email: event.nativeEvent.text}})}/>
           <RkTextInput rkType='rounded' placeholder='Password' secureTextEntry={true} onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, password: event.nativeEvent.text}})}/>
           <GradientButton onPress={this.handleLoginSubmit} rkType='large' style={styles.save} text='LOGIN'/>
@@ -99,11 +100,19 @@ let styles = RkStyleSheet.create(theme => ({
     resizeMode: 'cover',
     marginBottom: scaleVertical(10),
   },
+  hero: {
+    fontSize: 37,
+    marginBottom: 10
+  },
   container: {
     paddingHorizontal: 17,
     paddingBottom: scaleVertical(22),
+    // alignItems: 'center',
+    // flex: -1
+    marginTop: 300,
+    justifyContent: 'center',
     alignItems: 'center',
-    flex: -1
+    flex: 1
   },
   footer: {
     justifyContent: 'flex-end',

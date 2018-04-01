@@ -57,7 +57,7 @@ export class SignUp extends React.Component {
         onStartShouldSetResponder={ (e) => true}
         onResponderRelease={ (e) => Keyboard.dismiss()}>
         <View style={{alignItems: 'center'}}>
-          {renderIcon()}
+          {/* {renderIcon()} */}
           <RkText rkType='h1'>Registration</RkText>
         </View>
         <View style={styles.content}>
