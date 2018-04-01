@@ -56,7 +56,8 @@ export class LoginV1 extends React.Component {
       } catch (err) {
         console.log(err);
       }
-     this.props.navigation.navigate('SignUp');
+      //this is browse page
+     this.props.navigation.navigate('Browse');
     
   }
 
