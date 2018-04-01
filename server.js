@@ -3,6 +3,7 @@ const app = express();
 const models = require('./models');
 const bodyParser = require('body-parser')
 const request = require('request');
+const fetch = require('node-fetch');
 
 app.use(bodyParser.json())
 
@@ -11,13 +12,12 @@ app.get('/recommendations/:userid', (req,res,next) => {
   const headersOpt = {  
     "content-type": "application/json"
   };
-
   request({
     method:'post',
-    url:'http://localhost:3456/recommendations', 
+    url:'http://localhost:3456/recommendations',
     body: {
       "namespace": "charities",
-      "thing": "id", //Get userid from route here...
+      "thing": "person", //Get userid from route here...
       "configuration": {
         "actions" : {"liked": 1}
       }
@@ -54,6 +54,13 @@ app.get('/user/sign-in/:info', (req, res, next) => {
     res.send(user);
   })
 });
+
+
+app.get('/charity-search/:query', (req,res,next) => {
+  const searchQuery = req.params.query;
+  const query = `https://api.data.charitynavigator.org/v2/Organizations?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935&pageSize=20&pageNum=1&rated=true&search=${searchQuery}`;
+  fetch(query).then(response => response.json()).then(resJson => res.send(resJson));
+})
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });

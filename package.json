@@ -29,6 +29,7 @@
     "expo": "^25.0.0",
     "express": "^4.16.2",
     "mysql2": "^1.5.1",
+    "node-fetch": "^2.1.1",
     "node-fetch-json": "0.0.3",
     "raccoon": "^0.2.8",
     "request": "^2.83.0",
