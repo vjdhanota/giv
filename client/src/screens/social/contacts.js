@@ -4,7 +4,9 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  Text,
+  AsyncStorage
 } from 'react-native';
 import _ from 'lodash';
 import {
@@ -21,22 +23,27 @@ import {SocialBar} from '../../components';
 export class Contacts extends React.Component {
   static navigationOptions = {
     title: 'SEARCH'.toUpperCase()
-  };
+    };
+
 
   constructor(props) {
     super(props);
-
     this.charityarticles = data.getcharityArticles();
 
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      data: ds.cloneWithRows(this.charityarticles)
+      data: ds.cloneWithRows(this.charityarticles),
+      showingRecommendations: false,
+      header: "Recommended For You:"
     };
 
     this.filter = this._filter.bind(this);
     this.setData = this._setData.bind(this);
+    this.fetchUserRecommendations();
+    
     this.renderHeader = this._renderHeader.bind(this);
     this.renderRow = this._renderRow.bind(this);
+
   }
 
   _setData(data) {
@@ -77,12 +84,25 @@ export class Contacts extends React.Component {
     )
   }
 
-  fetchArticles = async (e) => {
+  fetchCharities = async (e) => {
     const response = await fetch(`http://localhost:5000/charity-search/${e.nativeEvent.text}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-    
+    this.setState({header: 'Search Results:'});
     this.setData(body);
+  }
+
+  fetchUserRecommendations = async () => {
+     
+    const id = await AsyncStorage.getItem('user_id');
+    const response = await fetch(`http://localhost:5000/recommendations/${id}`);
+    const body = await response.json();
+    console.log('body', body);
+    if (response.status !== 200) throw Error(body.message);
+    console.log(body);
+    this.setState({header: 'Recommended For You:'});
+    this.setData(body);
+
   }
 
   _renderHeader() {
@@ -93,8 +113,9 @@ export class Contacts extends React.Component {
                     //  onChange={(event) => this._filter(event.nativeEvent.text)}
                      label={<RkText rkType='awesome'>{FontAwesome.search}</RkText>}
                      rkType='row'
-                     onSubmitEditing={this.fetchArticles}
-                     placeholder='Search'/>
+                     onSubmitEditing={this.fetchCharities}
+                     placeholder='Find Charities...'/>
+        <Text>{this.state.header}</Text>
       </View>
     )
   }
@@ -107,19 +128,19 @@ export class Contacts extends React.Component {
         || charityarticles.tagLine.search(pattern) != -1 )
         return charityarticles;
     });
-
     this.setData(charityarticles);
   }
 
   render() {
     return (
-      <ListView
-        style={styles.container}
-        dataSource={this.state.data}
-        renderRow={this.renderRow}
-        renderSeparator={this.renderSeparator}
-        renderHeader={this.renderHeader}
-        enableEmptySections={true}/>
+        // <Text>{this.state.showingReccomendations ? "Reccomendations" : ""}</Text>
+        <ListView
+          style={styles.container}
+          dataSource={this.state.data}
+          renderRow={this.renderRow}
+          renderSeparator={this.renderSeparator}
+          renderHeader={this.renderHeader}
+          enableEmptySections={true}/>
     )
   }
 }
@@ -137,7 +158,7 @@ let styles = RkStyleSheet.create(theme => ({
     backgroundColor: theme.colors.screen.bold,
     // paddingHorizontal: 16,
     paddingVertical: 10,
-    height: 60,
+    height: 80,
     alignItems: 'center'
   },
   avatar: {

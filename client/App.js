@@ -12,7 +12,7 @@ import {data} from './src/data'
 import {AppLoading, Font} from 'expo';
 import {View, Text} from "react-native";
 import {FontAwesome} from './src/assets/icons';
-
+console.disableYellowBox = true;
 import {
   RkStyleSheet,
   RkText,
@@ -65,19 +65,6 @@ export default class App extends React.Component {
     super(props)
   }
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res }))
-      .catch(err => console.log(err));
-  }
-
-  callApi = async () => {
-    const response = await fetch("http://localhost:5000/user");
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-
-    return JSON.stringify(body);
-  };
 
   componentWillMount() {
     this._loadAssets();
@@ -96,14 +83,6 @@ export default class App extends React.Component {
     this.setState({loaded: true});
   };
 
-  handleSearchSubmit = () => {
-    try {
-       AsyncStorage.setItem('@MySuperStore:key', this.state.currentSearch);
-    } catch (error) {
-      // Error saving data
-    }
-    StackNavigator.navigate('SignUp')  
-  }
   render() {
     if (!this.state.loaded) {
       return <AppLoading />;

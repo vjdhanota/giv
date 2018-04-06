@@ -17,6 +17,7 @@ import {FontAwesome} from '../../assets/icons';
 import {GradientButton} from '../../components/gradientButton';
 import {scale, scaleModerate, scaleVertical} from '../../utils/scale';
 import { AsyncStorage } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 export class LoginV1 extends React.Component {
   static navigationOptions = {
@@ -31,8 +32,18 @@ export class LoginV1 extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleLoggedInUser();    
   }
-
+  handleLoggedInUser = async () => {
+    const id = await AsyncStorage.getItem('user_id');
+    if(id) {
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Contacts' })],
+      });
+      this.props.navigation.dispatch(resetAction);
+    }
+  }
   _renderImage(image) {
     let contentHeight = scaleModerate(375, 1);
     let height = Dimensions.get('window').height - contentHeight;
@@ -48,8 +59,10 @@ export class LoginV1 extends React.Component {
   }
 
   handleLoginSubmit = async () => {
-    const response = await fetch(`http://localhost:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
+    const response = await fetch(`http://172.20.10.5:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
+    console.log(response);
     const body = await response.json();
+    console.log(body);
     if (response.status !== 200) throw Error(body.message);
       try {
         await AsyncStorage.setItem('user_id', body.id.toString());
@@ -57,7 +70,13 @@ export class LoginV1 extends React.Component {
         console.log(err);
       }
       //this is browse page
-     this.props.navigation.navigate('Contacts');
+     const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Contacts' })],
+    });
+    this.props.navigation.dispatch(resetAction);
+    
+    
     
   }
 
