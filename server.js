@@ -7,8 +7,10 @@ const fetch = require('node-fetch');
 
 app.use(bodyParser.json())
 
+// {"recommendations":[{"thing":"131624046","weight":1.345032779671177,"last_actioned_at":"2018-03-11T20:30:31-07:00","last_expires_at":"2030-10-11T17:00:00-07:00","people":["951","184","11"]},{"thing":"050343046","weight":1,"last_actioned_at":"2018-03-11T20:20:25-07:00","last_expires_at":"2030-10-11T17:00:00-07:00","people":["11"]},
 
 app.get('/recommendations/:userid', (req,res,next) => {
+  console.log(req.params.userid);
   const headersOpt = {  
     "content-type": "application/json"
   };
@@ -17,14 +19,24 @@ app.get('/recommendations/:userid', (req,res,next) => {
     url:'http://localhost:3456/recommendations',
     body: {
       "namespace": "charities",
-      "thing": "person", //Get userid from route here...
+      "person": req.params.userid, //Get userid from route here...
       "configuration": {
         "actions" : {"liked": 1}
       }
   }, 
     headers: headersOpt,
     json: true,
-  }); 
+  }, async function(error, response, body){
+    var charities = [];
+    for(let i = 0; i < 7; i++) {
+      let ein = body.recommendations[i].thing;
+      const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
+      const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
+      charities.push(json);
+    }
+    res.send(charities);
+
+  });
 });
 
 app.get('/user', (req, res, next) => {
