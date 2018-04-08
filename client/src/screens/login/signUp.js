@@ -43,6 +43,7 @@ export class SignUp extends React.Component {
     // console.log("before")
     // await AsyncStorage.setItem('user_id', this.state.loginInfo.email);   
     // console.log("HERE" + await AsyncStorage.getItem('user_id'));
+    this.props.navigation.navigate('Login1');
   }
   render() {
     let renderIcon = () => {

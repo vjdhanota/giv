@@ -21,7 +21,7 @@ export class SocialBar extends RkComponent {
   constructor(props) {
     super(props);
 
-    this.likes = this.props.likes || 18;
+    this.likes = this.props.likes || 0;
     this.comments = this.props.comments || 26;
     this.shares = this.props.shares || 5;
     this.state = {
