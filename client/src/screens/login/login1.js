@@ -59,7 +59,7 @@ export class LoginV1 extends React.Component {
   }
 
   handleLoginSubmit = async () => {
-    const response = await fetch(`http://172.20.10.5:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
+    const response = await fetch(`http://10.189.71.189:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
     console.log(response);
     const body = await response.json();
     console.log(body);
