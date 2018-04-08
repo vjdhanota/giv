@@ -19,6 +19,7 @@ import {data} from '../../data';
 import {Avatar} from '../../components/avatar';
 import {FontAwesome} from '../../assets/icons';
 import {SocialBar} from '../../components';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export class Contacts extends React.Component {
   static navigationOptions = {
@@ -34,7 +35,8 @@ export class Contacts extends React.Component {
     this.state = {
       data: ds.cloneWithRows(this.charityarticles),
       showingRecommendations: false,
-      header: "Recommended For You:"
+      header: "Recommended For You:",
+      loading: true
     };
 
     this.filter = this._filter.bind(this);
@@ -65,11 +67,11 @@ export class Contacts extends React.Component {
       <Image rkCardImg source={row.cause.image}/>*/}
 
         <View rkCardContent >
-          <RkText numberOfLines={2} rkType='header6' >{name}</RkText>
-          <RkText style={styles.post} numberOfLines={3} rkType='secondary1'>{tagLine}</RkText>
+          <RkText numberOfLines={2} style={styles.cardText} rkType='header6' >{name}</RkText>
+          <RkText style={styles.cardText} numberOfLines={3} rkType='secondary1'>{tagLine}</RkText>
           {/* <RkText style={styles.post} numberOfLines={3} rkType='secondary1'>{cause}</RkText> */}
-          <RkText rkType='secondary6 hintColor'>Charity Rating: {rating}</RkText>
-          <SocialBar rkType='space' showLabel={true}/>
+          <RkText style={styles.cardText} rkType='secondary6 hintColor'>Charity Rating: {rating}</RkText>
+          <SocialBar style={styles.cardText} rkType='space' showLabel={true}/>
       </View>
       <View rkCardFooter>
       </View>
@@ -97,10 +99,8 @@ export class Contacts extends React.Component {
     const id = await AsyncStorage.getItem('user_id');
     const response = await fetch(`http://localhost:5000/recommendations/${id}`);
     const body = await response.json();
-    console.log('body', body);
     if (response.status !== 200) throw Error(body.message);
-    console.log(body);
-    this.setState({header: 'Recommended For You:'});
+    this.setState({header: 'Recommended For You:', loading:false});
     this.setData(body);
 
   }
@@ -115,7 +115,7 @@ export class Contacts extends React.Component {
                      rkType='row'
                      onSubmitEditing={this.fetchCharities}
                      placeholder='Find Charities...'/>
-        <Text>{this.state.header}</Text>
+        <Text style={styles.searchLabel}>{this.state.header}</Text>
       </View>
     )
   }
@@ -132,22 +132,29 @@ export class Contacts extends React.Component {
   }
 
   render() {
+    const isLoading = this.state.loading;    
     return (
-        // <Text>{this.state.showingReccomendations ? "Reccomendations" : ""}</Text>
+        <View style={{ flex: 1 }}>
+        <Spinner visible={this.state.loading} textContent={"Getting Recommendations..."} animation='fade' color='#000' textStyle={{color: '#000'}} overlayColor='#FFF' />
         <ListView
-          style={styles.container}
-          dataSource={this.state.data}
-          renderRow={this.renderRow}
-          renderSeparator={this.renderSeparator}
-          renderHeader={this.renderHeader}
-          enableEmptySections={true}/>
+        style={styles.container}
+        dataSource={this.state.data}
+        renderRow={this.renderRow}
+        renderSeparator={this.renderSeparator}
+        renderHeader={this.renderHeader}
+        enableEmptySections={true}/>
+      </View>
+        
     )
   }
+
+      
+        
+    
+  
 }
 
-let styles = RkStyleSheet.create(theme => ({
-  
-  
+let styles = RkStyleSheet.create(theme => ({ 
   container: {
     backgroundColor: theme.colors.screen.scroll,
     paddingVertical: 8,
@@ -156,10 +163,14 @@ let styles = RkStyleSheet.create(theme => ({
   },
   searchContainer: {
     backgroundColor: theme.colors.screen.bold,
-    // paddingHorizontal: 16,
+    width: '90%',
     paddingVertical: 10,
     height: 80,
-    alignItems: 'center'
+    marginLeft: 10
+    // alignItems: 'center'
+  },
+  searchLabel: {
+    marginTop: 8
   },
   avatar: {
     marginRight: 16
@@ -173,7 +184,10 @@ let styles = RkStyleSheet.create(theme => ({
     height: 150,
     width: 390
   },
+  cardText: {
+    marginTop: 5 
+  },
   post: {
-    marginTop: 5
+   // marginTop: 5
   }
 }));

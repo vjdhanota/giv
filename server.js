@@ -28,7 +28,7 @@ app.get('/recommendations/:userid', (req,res,next) => {
     json: true,
   }, async function(error, response, body){
     var charities = [];
-    for(let i = 0; i < 7; i++) {
+    for(let i = 0; i < 2; i++) {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
