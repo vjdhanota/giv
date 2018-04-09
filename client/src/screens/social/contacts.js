@@ -20,6 +20,7 @@ import {Avatar} from '../../components/avatar';
 import {FontAwesome} from '../../assets/icons';
 import {SocialBar} from '../../components';
 import Spinner from 'react-native-loading-spinner-overlay';
+const Dimensions = require('Dimensions');
 
 export class Contacts extends React.Component {
   static navigationOptions = {
@@ -55,29 +56,31 @@ export class Contacts extends React.Component {
     })
   }
 
-  _renderRow(row) {
-    let name = `${row.charityName}` ;
-    let tagLine = `${row.tagLine}`; 
-    let rating = `${row.currentRating.rating}`;
-    // let cause = `${row.cause.causeName}`;
+   _renderRow(row) {
+    let name = row.charityName ;
+    let city = row.mailingAddress.city;
+    let state = row.mailingAddress.stateOrProvince;
+    let query = name+' '+city+','+state;
+    let cause = row.cause.causeName;
+    
     return (
-      <TouchableOpacity >
+      <TouchableOpacity onPress={() => this.navigateToDetails(row)}>
       <RkCard rkType='horizontal' style={styles.card}>
-      {/*<Avatar rkType='circle' style={styles.avatar} img={row.cause.image}/>
-      <Image rkCardImg source={row.cause.image}/>*/}
+        <Image style={styles.image} source={{uri: row.cause.image}}/>
 
         <View rkCardContent >
           <RkText numberOfLines={2} style={styles.cardText} rkType='header6' >{name}</RkText>
-          <RkText style={styles.cardText} numberOfLines={3} rkType='secondary1'>{tagLine}</RkText>
-          {/* <RkText style={styles.post} numberOfLines={3} rkType='secondary1'>{cause}</RkText> */}
-          <RkText style={styles.cardText} rkType='secondary6 hintColor'>Charity Rating: {rating}</RkText>
-          <SocialBar style={styles.cardText} rkType='space' showLabel={true}/>
-      </View>
-      <View rkCardFooter>
-      </View>
+          <RkText style={styles.cardText} numberOfLines={3} rkType='secondary2'>{cause}</RkText>
+          <RkText style={styles.cardText} rkType='secondary6 hintColor'>Charity Rating: <Image style={{width: 31, height: 8}} source={{uri: row.currentRating.ratingImage.small}}/></RkText>
+        </View>
+        <View rkCardFooter></View>
     </RkCard>
     </TouchableOpacity>
     )
+  }
+
+  navigateToDetails = (row) => {
+    this.props.navigation.navigate('Article', {charity: row})
   }
 
   renderSeparator(sectionID, rowID) {
@@ -157,23 +160,25 @@ export class Contacts extends React.Component {
 let styles = RkStyleSheet.create(theme => ({ 
   container: {
     backgroundColor: theme.colors.screen.scroll,
-    paddingVertical: 8,
+    // paddingVertical: 8,
     // paddingHorizontal: 14,
+    flex: 1,
+    flexWrap: 'wrap',
     flexDirection: 'row',
+    padding: 9,
   },
   searchContainer: {
     backgroundColor: theme.colors.screen.bold,
-    width: '90%',
+    width: Dimensions.get('window').width - 15,
     paddingVertical: 10,
     height: 80,
-    marginLeft: 10
-    // alignItems: 'center'
+
   },
   searchLabel: {
     marginTop: 8
   },
-  avatar: {
-    marginRight: 16
+  image: {
+    width: 75, height: 75, marginLeft: 8, borderRadius:37
   },
   separator: {
     flex: 1,
@@ -181,13 +186,16 @@ let styles = RkStyleSheet.create(theme => ({
   },
   card: {
     marginVertical: 8,
-    height: 150,
-    width: 390
+    height: 115,
+    width: Dimensions.get('window').width - 17,
+    alignItems: 'center',
+    borderRadius: 15
   },
   cardText: {
-    marginTop: 5 
+    marginTop: 5,
+    flexWrap: 'wrap',    
+
   },
   post: {
-   // marginTop: 5
   }
 }));

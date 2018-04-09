@@ -59,10 +59,8 @@ export class LoginV1 extends React.Component {
   }
 
   handleLoginSubmit = async () => {
-    const response = await fetch(`http://10.189.71.189:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
-    console.log(response);
+    const response = await fetch(`http://localhost:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
     const body = await response.json();
-    console.log(body);
     if (response.status !== 200) throw Error(body.message);
       try {
         await AsyncStorage.setItem('user_id', body.id.toString());

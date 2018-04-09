@@ -24,6 +24,8 @@ export class ProfileV1 extends React.Component {
     this.user = data.getUser(id);
   }
 
+  componentWillReceiveProps() {
+  }
   render() {
     let name = `${this.user.firstName} ${this.user.lastName}`;
     let images = this.user.images;
