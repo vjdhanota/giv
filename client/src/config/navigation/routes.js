@@ -85,20 +85,21 @@ export const MainRoutes = [
       },
     ]
   },
-//   {
-//     id: 'ArticlesMenu',
-//     title: 'Browse',
-//     icon: FontIcons.article,
-//     screen: Screens.Articles4,
+  {
+    id: 'Article',
+    title: 'Article View',
+    icon: FontIcons.article,
+    screen: Screens.Article,
+    children: []
 //     children: [{
-//       id: 'Browse',
-//       title: 'Browse',
-//       screen: Screens.Articles4,
+//       id: 'Article',
+//       title: 'Article View',
+//       screen: Screens.Articles,
 //       children: []
     
 //   },
 // ]
-//   },
+  },
   {
     id:'ContactsMenu',
     title: 'Browse',

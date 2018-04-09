@@ -4,11 +4,33 @@ const models = require('./models');
 const bodyParser = require('body-parser')
 const request = require('request');
 const fetch = require('node-fetch');
+const GOOGLE_PLACES_API_KEY = "AIzaSyCiXLi-0VHwKvLWFQM9MyUKMG-13C7BKjI"
+const GOOGLE_PLACES_OUTPUT_FORMAT = "json"
+const GooglePlaces = require('googleplaces');
+var googlePlaces = new GooglePlaces(GOOGLE_PLACES_API_KEY, GOOGLE_PLACES_OUTPUT_FORMAT);
 
 app.use(bodyParser.json())
 
 // {"recommendations":[{"thing":"131624046","weight":1.345032779671177,"last_actioned_at":"2018-03-11T20:30:31-07:00","last_expires_at":"2030-10-11T17:00:00-07:00","people":["951","184","11"]},{"thing":"050343046","weight":1,"last_actioned_at":"2018-03-11T20:20:25-07:00","last_expires_at":"2030-10-11T17:00:00-07:00","people":["11"]},
 
+app.get('/charityImage/:query', (req,res,next) => {
+  parameters = {
+    query: req.params.query
+  };
+
+  googlePlaces.textSearch(parameters, function (error, response) {
+    if (error) throw error;
+    if(response.results[0].photos) {
+      googlePlaces.imageFetch({photoreference: response.results[0].photos[0].photo_reference,sensor: false}, function (error, response) {
+          if (error) throw error;
+          
+         res.send(response)
+  
+      });
+    }
+  });
+
+});
 app.get('/recommendations/:userid', (req,res,next) => {
   console.log(req.params.userid);
   const headersOpt = {  
@@ -32,6 +54,7 @@ app.get('/recommendations/:userid', (req,res,next) => {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
+      
       charities.push(json);
     }
     res.send(charities);
