@@ -8,7 +8,8 @@ import {
 import {
   RkCard,
   RkText,
-  RkStyleSheet
+  RkStyleSheet,
+  RkButton
 } from 'react-native-ui-kitten';
 import {data} from '../../data';
 import {Avatar} from '../../components';
@@ -46,6 +47,9 @@ export class Article extends React.Component {
     console.log(this.state.img);
   }
 
+  navigateToSub = () => {
+    this.props.navigation.navigate('Subscribe', {});
+  }
   render() {
     return (
       <ScrollView style={styles.root}>
@@ -66,6 +70,7 @@ export class Article extends React.Component {
             </View>
           </View>
           <View rkCardFooter>
+          <RkButton onPress={() => this.navigateToSub()}>Subscribe</RkButton>
             <SocialBar/>
           </View>
         </RkCard>
