@@ -121,7 +121,7 @@ export const MainRoutes = [
   },
   {
     id: 'WalkthroughMenu',
-    title: 'Reccomended',
+    title: 'Reccommended',
     icon: FontIcons.mobile,
     screen: Screens.ArticlesRec,
     children: [{
@@ -154,7 +154,7 @@ export const MainRoutes = [
 
     ]
   },
-  {
+ {
     id: 'OtherMenu',
     title: 'Other',
     icon: FontIcons.other,
@@ -168,13 +168,13 @@ export const MainRoutes = [
       }
     ]
   },
-  {
+ /**{
     id: 'Themes',
     title: 'Themes',
     icon: FontIcons.theme,
     screen: Screens.Themes,
     children: []
-  },
+  },**/
 ];
 
 let menuRoutes = _.cloneDeep(MainRoutes);
