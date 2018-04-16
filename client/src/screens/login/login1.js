@@ -39,7 +39,7 @@ export class LoginV1 extends React.Component {
     if(id) {
       const resetAction = NavigationActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Contacts' })],
+        actions: [NavigationActions.navigate({ routeName: 'EcommerceMenu' })],
       });
       this.props.navigation.dispatch(resetAction);
     }
