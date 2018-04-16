@@ -78,6 +78,12 @@ export const MainRoutes = [
         children: []
       },
       {
+        id: 'Subscribe',
+    title: 'Subscribe View',
+    screen: Screens.Subscribe,
+    children: []
+      },
+      {
         id: 'Feed',
         title: 'Feed',
         screen: Screens.Feed,
@@ -90,6 +96,21 @@ export const MainRoutes = [
     title: 'Article View',
     icon: FontIcons.article,
     screen: Screens.Article,
+    children: []
+//     children: [{
+//       id: 'Article',
+//       title: 'Article View',
+//       screen: Screens.Articles,
+//       children: []
+    
+//   },
+// ]
+  },
+  {
+    id: 'Subscribe',
+    title: 'Subscribe View',
+    icon: FontIcons.article,
+    screen: Screens.Subscribe,
     children: []
 //     children: [{
 //       id: 'Article',
