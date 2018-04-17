@@ -14,6 +14,7 @@ import { GradientButton } from "../../components";
 import { data } from "../../data";
 import formatNumber from "../../utils/textUtils";
 const Dimensions = require("Dimensions");
+import { AsyncStorage } from 'react-native';
 
 export class Subscribe extends React.Component {
   static navigationOptions = {
@@ -22,10 +23,13 @@ export class Subscribe extends React.Component {
   constructor(props) {
     super(props);
     this.user = data.getUser();
+    let {params} = this.props.navigation.state;
+    let charity = params ? params.data : ''
     this.state = {
       frequency: "Monthly",
       pikerVisible: false,
-      amount: '$'
+      amount: '$',
+      charity: charity
     };
   }
   setFrequency = (index) => {
@@ -33,8 +37,12 @@ export class Subscribe extends React.Component {
     this.setState({frequency: freq[parseInt(index)]});
   }
 
-  handleSubscribe = () => {
-    console.log(this.state)
+  handleSubscribe = async () => {
+    const id = await AsyncStorage.getItem('user_id');
+    let req = {charity_ein: this.state.charity.ein, frequency: this.state.frequency, amount: this.state.amount, userId: id}
+    const response = await fetch(`http://localhost:5000/subscribe/${JSON.stringify(req)}`)
+    const body = await response.json();
+    console.log(body);
   }
 
   render() {

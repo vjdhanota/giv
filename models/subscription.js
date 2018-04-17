@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Subscription = sequelize.define('Subscription', {
     charity_ein: DataTypes.STRING,
     type: DataTypes.STRING,
-    frequency: DataTypes.INTEGER,
+    frequency: DataTypes.STRING,
     amount: DataTypes.DOUBLE,
   });
 

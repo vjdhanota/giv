@@ -70,26 +70,13 @@ app.get('/user', (req, res, next) => {
   models.User.findAll().then(user => res.send(user));
 });
 
-//post subscription to subscription table
-// app.get('/subscribe/:subInfo', (req, res, next) => {
-//   info = JSON.parse(req.params.subInfo);
-//   Subscription.findOrCreate({where:{
-//     charity_ein: info.charity_ein,
-//     type: info.type,
-//     frequency: info.frequency,
-//     amount: info.amount,
-//     userId: info.userId
-//   }.then((sub) => {
-//     res.send(sub);
 
-//   })
-// });
-
-app.get('/subscribe:info', (req, res, next) => {
+app.get('/subscribe/:info', (req, res, next) => {
+  console.log(req.params.info);
   const info = JSON.parse(req.params.info);
   Subscription.findOrCreate({where: {
     charity_ein: info.charity_ein,
-    type: info.type,
+    type: null,
     frequency: info.frequency,
     amount: info.amount,
     userId: info.userId,
