@@ -71,20 +71,33 @@ app.get('/user', (req, res, next) => {
 });
 
 //post subscription to subscription table
-app.get('/subscribe/:subInfo', (req, res, next) => {
-  info = JSON.parse(req.params.subInfo);
-  Subscription.findOrCreate({where:{
+// app.get('/subscribe/:subInfo', (req, res, next) => {
+//   info = JSON.parse(req.params.subInfo);
+//   Subscription.findOrCreate({where:{
+//     charity_ein: info.charity_ein,
+//     type: info.type,
+//     frequency: info.frequency,
+//     amount: info.amount,
+//     userId: info.userId
+//   }.then((sub) => {
+//     res.send(sub);
+
+//   })
+// });
+
+app.get('/subscribe:info', (req, res, next) => {
+  const info = JSON.parse(req.params.info);
+  Subscription.findOrCreate({where: {
     charity_ein: info.charity_ein,
     type: info.type,
     frequency: info.frequency,
     amount: info.amount,
-    userId: info.userId
-  }.then((sub) => {
+    userId: info.userId,
+  }}).then((sub) => {
     res.send(sub);
-
   })
+  
 });
-
 
 app.get('/user/sign-up/:info', (req, res, next) => {
   const loginObject = JSON.parse(req.params.info);
@@ -100,6 +113,7 @@ app.get('/user/sign-up/:info', (req, res, next) => {
   })
   
 });
+
 app.get('/user/sign-in/:info', (req, res, next) => {
   const loginObject = JSON.parse(req.params.info);
   models.User.findOne({where: {
