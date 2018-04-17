@@ -14,10 +14,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       frequency: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       amount: {
-        type: Sequelize.DOUBLE,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

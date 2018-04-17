@@ -54,7 +54,7 @@ app.get('/recommendations/:userid', (req,res,next) => {
     json: true,
   }, async function(error, response, body){
     var charities = [];
-    for(let i = 0; i < 2; i++) {
+    for(let i = 0; i < 4; i++) {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
@@ -70,26 +70,13 @@ app.get('/user', (req, res, next) => {
   models.User.findAll().then(user => res.send(user));
 });
 
-//post subscription to subscription table
-// app.get('/subscribe/:subInfo', (req, res, next) => {
-//   info = JSON.parse(req.params.subInfo);
-//   Subscription.findOrCreate({where:{
-//     charity_ein: info.charity_ein,
-//     type: info.type,
-//     frequency: info.frequency,
-//     amount: info.amount,
-//     userId: info.userId
-//   }.then((sub) => {
-//     res.send(sub);
 
-//   })
-// });
-
-app.get('/subscribe:info', (req, res, next) => {
+app.get('/subscribe/:info', (req, res, next) => {
   const info = JSON.parse(req.params.info);
+  console.log(info);
   Subscription.findOrCreate({where: {
     charity_ein: info.charity_ein,
-    type: info.type,
+    type: null,
     frequency: info.frequency,
     amount: info.amount,
     userId: info.userId,

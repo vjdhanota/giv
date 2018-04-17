@@ -48,7 +48,7 @@ export class Article extends React.Component {
   }
 
   navigateToSub = () => {
-    this.props.navigation.navigate('Subscribe', {});
+    this.props.navigation.navigate('Subscribe', {data: this.data});
   }
   render() {
     return (
