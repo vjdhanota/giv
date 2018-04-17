@@ -72,8 +72,8 @@ app.get('/user', (req, res, next) => {
 
 
 app.get('/subscribe/:info', (req, res, next) => {
-  console.log(req.params.info);
   const info = JSON.parse(req.params.info);
+  console.log(info);
   Subscription.findOrCreate({where: {
     charity_ein: info.charity_ein,
     type: null,

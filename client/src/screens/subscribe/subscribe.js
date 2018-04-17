@@ -42,7 +42,6 @@ export class Subscribe extends React.Component {
     let req = {charity_ein: this.state.charity.ein, frequency: this.state.frequency, amount: this.state.amount, userId: id}
     const response = await fetch(`http://localhost:5000/subscribe/${JSON.stringify(req)}`)
     const body = await response.json();
-    console.log(body);
   }
 
   render() {
