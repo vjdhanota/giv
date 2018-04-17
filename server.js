@@ -9,6 +9,10 @@ const GOOGLE_PLACES_OUTPUT_FORMAT = "json"
 const GooglePlaces = require('googleplaces');
 var googlePlaces = new GooglePlaces(GOOGLE_PLACES_API_KEY, GOOGLE_PLACES_OUTPUT_FORMAT);
 
+const Subscription = models.Subscription;
+const User = models.User;
+const Transaction = models.Transaction;
+
 app.use(bodyParser.json())
 
 // {"recommendations":[{"thing":"131624046","weight":1.345032779671177,"last_actioned_at":"2018-03-11T20:30:31-07:00","last_expires_at":"2030-10-11T17:00:00-07:00","people":["951","184","11"]},{"thing":"050343046","weight":1,"last_actioned_at":"2018-03-11T20:20:25-07:00","last_expires_at":"2030-10-11T17:00:00-07:00","people":["11"]},
@@ -50,7 +54,7 @@ app.get('/recommendations/:userid', (req,res,next) => {
     json: true,
   }, async function(error, response, body){
     var charities = [];
-    for(let i = 0; i < 2; i++) {
+    for(let i = 0; i < 4; i++) {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
@@ -64,6 +68,22 @@ app.get('/recommendations/:userid', (req,res,next) => {
 
 app.get('/user', (req, res, next) => {
   models.User.findAll().then(user => res.send(user));
+});
+
+
+app.get('/subscribe/:info', (req, res, next) => {
+  const info = JSON.parse(req.params.info);
+  console.log(info);
+  Subscription.findOrCreate({where: {
+    charity_ein: info.charity_ein,
+    type: null,
+    frequency: info.frequency,
+    amount: info.amount,
+    userId: info.userId,
+  }}).then((sub) => {
+    res.send(sub);
+  })
+  
 });
 
 app.get('/user/sign-up/:info', (req, res, next) => {
@@ -80,6 +100,7 @@ app.get('/user/sign-up/:info', (req, res, next) => {
   })
   
 });
+
 app.get('/user/sign-in/:info', (req, res, next) => {
   const loginObject = JSON.parse(req.params.info);
   models.User.findOne({where: {
