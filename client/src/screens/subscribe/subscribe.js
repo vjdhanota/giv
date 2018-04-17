@@ -1,86 +1,131 @@
-import React from 'react';
-import {
-  View,
-  ScrollView
-} from 'react-native';
+import React from "react";
+import { View, ScrollView, Picker, Text, TouchableOpacity } from "react-native";
 import {
   RkStyleSheet,
-  RkText
-} from 'react-native-ui-kitten';
-import {Avatar} from '../../components';
-import {Gallery} from '../../components';
-import {GradientButton} from '../../components';
-import {data} from '../../data';
-import formatNumber from '../../utils/textUtils';
-
+  RkText,
+  RkPicker,
+  RkTextInput,
+  RkChoiceGroup,
+  RkChoice
+} from "react-native-ui-kitten";
+import { Avatar } from "../../components";
+import { Gallery } from "../../components";
+import { GradientButton } from "../../components";
+import { data } from "../../data";
+import formatNumber from "../../utils/textUtils";
+const Dimensions = require("Dimensions");
 
 export class Subscribe extends React.Component {
-    static navigationOptions = {
-      title: 'Subscribe View'.toUpperCase()
+  static navigationOptions = {
+    title: "Subscribe".toUpperCase()
+  };
+  constructor(props) {
+    super(props);
+    this.user = data.getUser();
+    this.state = {
+      frequency: "Monthly",
+      pikerVisible: false,
+      amount: '$'
     };
-    constructor(props) {
-        super(props);
-        this.user = data.getUser();
-      }
-    
-      render() {
-        let name = `${this.user.firstName} ${this.user.lastName}`;
-        let images = this.user.images;
-        return (
-          <ScrollView style={styles.root}>
-            <View style={[styles.header, styles.bordered]}>
-            
-              <RkText rkType='header2'>IT WORKED</RkText>
-              <GradientButton style={styles.button} text='BEAST'/>
-            </View>
-    
+  }
+  setFrequency = (index) => {
+    let freq = ['Weekly', 'Monthly', 'Yearly'];
+    this.setState({frequency: freq[parseInt(index)]});
+  }
+
+  handleSubscribe = () => {
+    console.log(this.state)
+  }
+
+  render() {
+    let name = `${this.user.firstName} ${this.user.lastName}`;
+    let images = this.user.images;
+
+    return (
+      <ScrollView style={styles.root}>
+        <View>
+        <RkText style={{marginTop: 5, marginLeft: 5}} rkType="primary">Amount</RkText>
+        <View style={{flexDirection: "row", margin: 10}}>
+          <RkTextInput rkType='form' value={this.state.amount} placeholder='Amount' onChange={(event) => this.setState({amount: event.nativeEvent.text})}/>
+        </View>
           
-          </ScrollView>
-        )
-      }
+        <RkText style={{marginLeft: 5}}  rkType="primary">Frequency</RkText>
+          <RkChoiceGroup onChange={(index) => this.setFrequency(index)} style={{margin: 5}} selectedIndex={2} radio>
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+            <TouchableOpacity choiceTrigger>
+              <View style={{ flexDirection: "row", alignItems: "center", marginLeft:10 }}>
+                <RkChoice rkType="radio" />
+                <Text>Weekly</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity choiceTrigger>
+              <View style={{ flexDirection: "row", alignItems: "center",  marginLeft:10 }}>
+                <RkChoice rkType="radio" />
+                <Text>Monthly</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity choiceTrigger>
+              <View style={{ flexDirection: "row", alignItems: "center",  marginLeft:10 }}>
+                <RkChoice rkType="radio" />
+                <Text>Yearly</Text>
+              </View>
+            </TouchableOpacity>
+            </View>
+          </RkChoiceGroup>
+
+          <GradientButton style={styles.save} rkType='medium' text='SUBMIT' onPress={this.handleSubscribe}/>
+          
+         
+        </View>
+      </ScrollView>
+    );
+  }
 }
 
-
 let styles = RkStyleSheet.create(theme => ({
-    root: {
-      backgroundColor: theme.colors.screen.base
-    },
-    header: {
-      alignItems: 'center',
-      paddingTop: 25,
-      paddingBottom: 17
-    },
-    userInfo: {
-      flexDirection: 'row',
-      paddingVertical: 18,
-    },
-    bordered: {
-      borderBottomWidth: 1,
-      borderColor: theme.colors.border.base
-    },
-    section: {
-      flex: 1,
-      alignItems: 'center'
-    },
-    space: {
-      marginBottom: 3
-    },
-    separator: {
-      backgroundColor: theme.colors.border.base,
-      alignSelf: 'center',
-      flexDirection: 'row',
-      flex: 0,
-      width: 1,
-      height: 42
-    },
-    buttons: {
-      flexDirection: 'row',
-      paddingVertical: 8,
-    },
-    button: {
-      marginTop: 18,
-      alignSelf: 'center',
-      width: 140
-    },
-  
-  }));
+  root: {
+    backgroundColor: theme.colors.screen.base,
+  },
+  save: {
+    marginVertical: 20,
+    width: "40%",
+    marginLeft: 10,
+    
+  },
+  header: {
+    alignItems: "center",
+    paddingTop: 25,
+    paddingBottom: 17
+  },
+  userInfo: {
+    flexDirection: "row",
+    paddingVertical: 18
+  },
+  bordered: {
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border.base
+  },
+  section: {
+    flex: 1,
+    alignItems: "center"
+  },
+  space: {
+    marginBottom: 3
+  },
+  separator: {
+    backgroundColor: theme.colors.border.base,
+    alignSelf: "center",
+    flexDirection: "row",
+    flex: 0,
+    width: 1,
+    height: 42
+  },
+  buttons: {
+    flexDirection: "row",
+    paddingVertical: 8
+  },
+  button: {
+    marginTop: 18,
+    width: 140
+  }
+}));
