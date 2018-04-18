@@ -48,6 +48,7 @@ export class CardInput extends React.Component {
         secureTextEntry={this.state.hidden}
         onChangeText={(cardNumber) => {
           this.setState({cardNumber: this.formatCreditNumber(cardNumber, this.state.hidden)})
+          this.props.onNumberChange(cardNumber);
         }}
         value={this.state.cardNumber}
         keyboardType='numeric'

@@ -15,6 +15,7 @@ import {PasswordTextInput} from '../../components/passwordTextInput';
 import {DatePicker} from '../../components/picker/datePicker';
 import {CardInput} from '../../components/cardInput';
 import {scale} from '../../utils/scale';
+import { AsyncStorage } from 'react-native';
 
 export class AddToCardForm extends React.Component {
   static navigationOptions = {
@@ -27,8 +28,8 @@ export class AddToCardForm extends React.Component {
       cardNumber: '',
       nameOnCard: '',
       cardCode: '',
-      expireYear: 2017,
-      expireMonth: 8,
+      expireYear: 2018,
+      expireMonth: 5,
       pickerVisible: false,
     };
   }
@@ -39,8 +40,31 @@ export class AddToCardForm extends React.Component {
     this.hidePicker()
   }
 
+  handleCardAdd = async () => {
+    const id = await AsyncStorage.getItem('user_id');
+    const date = `${this.state.expireMonth}/${this.state.expireYear}`;
+    const req = {userId: id, name: this.state.nameOnCard, bank: "CitiBank", amount: "0", date: date, cardNo: this.state.cardNumber, type: "visa", currency:"usd"}
+    const response = await fetch(`http://localhost:5000/card/add
+                                          ?userId=${id}
+                                          &name=${this.state.nameOnCard}
+                                          &bank=${"CitiBank"}
+                                          &amount=${0}
+                                          &date=${date}
+                                          &cardNo=${this.state.cardNumber}
+                                          &type=${"visa"}
+                                          &currency=${"usd"}
+                                `)
+    console.log(response)
+    const body = await response.json();
+
+    this.props.navigation.goBack()    
+  }
   hidePicker() {
     this.setState({pickerVisible: false});
+  }
+
+  handleCardNumber = (num) => {
+    this.setState({cardNumber: num} );
   }
 
   render() {
@@ -55,7 +79,7 @@ export class AddToCardForm extends React.Component {
               <View style={[styles.textRow]}>
                 <RkText rkType='subtitle'>Card Number</RkText>
               </View>
-              <CardInput/>
+              <CardInput onNumberChange={this.handleCardNumber}/>
             </View>
 
             <View style={[styles.content]}>
@@ -108,9 +132,7 @@ export class AddToCardForm extends React.Component {
             </View>
           </View>
           <View>
-            <GradientButton rkType='large' text='ADD TO CARD' onPress={() => {
-              this.props.navigation.goBack()
-            }}/>
+            <GradientButton rkType='large' text='ADD CARD' onPress={this.handleCardAdd}/>
           </View>
         </View>
       </RkAvoidKeyboard>

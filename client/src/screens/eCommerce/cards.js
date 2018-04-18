@@ -73,7 +73,7 @@ export class Cards extends React.Component {
   _renderFooter() {
     return (
       <View style={styles.footer}>
-        <RkButton style={styles.button} rkType='circle highlight'>
+        <RkButton style={styles.button} onPress={() => this.props.navigation.navigate('AddToCardForm')} rkType='circle highlight'>
           <Image source={require('../../assets/icons/iconPlus.png')}/>
         </RkButton>
       </View>

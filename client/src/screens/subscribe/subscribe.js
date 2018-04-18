@@ -40,7 +40,7 @@ export class Subscribe extends React.Component {
   handleSubscribe = async () => {
     const id = await AsyncStorage.getItem('user_id');
     let req = {charity_ein: this.state.charity.ein, frequency: this.state.frequency, amount: this.state.amount, userId: id}
-    const response = await fetch(`http://localhost:5000/subscribe/${JSON.stringify(req)}`)
+    const response = await fetch(`http://localhost:5000/subscribe/${JSON.stringify(req)}`)    
     const body = await response.json();
   }
 
