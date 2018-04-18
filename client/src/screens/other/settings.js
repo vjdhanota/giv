@@ -47,6 +47,11 @@ export class Settings extends React.Component {
           </View>
           <View style={styles.row}>
             <TouchableOpacity style={styles.rowButton}>
+              <RkText rkType='header6' onPress={() => this.props.navigation.navigate('Cards')}>Edit Payment Info</RkText>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.rowButton}>
               <RkText rkType='header6'>Change Password</RkText>
             </TouchableOpacity>
           </View>
@@ -65,7 +70,7 @@ export class Settings extends React.Component {
                       onValueChange={(shouldRefresh) => this.setState({shouldRefresh})}/>
           </View>
         </View>
-        <View style={styles.section}>
+        {/*<View style={styles.section}>
           <View style={[styles.row, styles.heading]}>
             <RkText rkType='primary header6'>FIND FRIENDS</RkText>
           </View>
@@ -89,11 +94,12 @@ export class Settings extends React.Component {
             }}/>
           </View>
         </View>
+      */}
 
         <View style={styles.section}>
-          <View style={[styles.row, styles.heading]}>
+          {/*<View style={[styles.row, styles.heading]}>
             <RkText rkType='primary header6'>SUPPORT</RkText>
-          </View>
+          </View>*/}
           <View style={styles.row}>
             <TouchableOpacity style={styles.rowButton}>
               <RkText rkType='header6'>Help</RkText>

@@ -35,8 +35,8 @@ export class SideMenu extends React.Component {
 
   _renderIcon() {
     if (RkTheme.current.name === 'light')
-      return <Image style={styles.icon} source={require('../../assets/images/smallLogo.png')}/>;
-    return <Image style={styles.icon} source={require('../../assets/images/smallLogoDark.png')}/>
+      return <Image style={styles.icon} source={require('../../assets/icons/iconPlus.png')}/>;
+    return <Image style={styles.icon} source={require('../../assets/icons/iconPlus.png')}/>
 
   }
 
@@ -67,7 +67,7 @@ export class SideMenu extends React.Component {
           showsVerticalScrollIndicator={false}>
           <View style={[styles.container, styles.content]}>
             {this._renderIcon()}
-            <RkText rkType='logo'>UI Kitten</RkText>
+            <RkText rkType='logo'>giv</RkText>
           </View>
           {menu}
         </ScrollView>
