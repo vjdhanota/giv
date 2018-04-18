@@ -37,23 +37,19 @@ app.get('/charityImage/:query', (req,res,next) => {
 
 });
 
-app.get('/card', (req,res,next) => {
-  console.log(req.param('userId'));
-  res.send('made it');
-  const info = JSON.parse(req.params.card);
-  console.log(info);
-  // Cards.findOrCreate({where: {
-  //   userId: info.userId,
-  //   name: info.name,
-  //   bank: info.bank,
-  //   amount: info.amount,
-  //   date: info.date,
-  //   cardNo: info.cardNo,
-  //   type:info.type,
-  //   currency: info.currency
-  // }}).then((sub) => {
-  //   res.send(sub);
-  // })
+app.get('/card/add', (req,res,next) => {
+  Cards.findOrCreate({where: {
+    userId: req.param('userId'),
+    name: req.param('name'),
+    bank: req.param('bank'),
+    amount: req.param('amount'),
+    date: req.param('date'),
+    cardNo: req.param('cardNo'),
+    type: req.param('type'),
+    currency: req.param('currency')
+  }}).then((sub) => {
+    res.send(sub);
+  })
 
 
 });

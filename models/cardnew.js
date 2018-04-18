@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.STRING,
     cardNo: DataTypes.STRING,
     type: DataTypes.STRING,
-    currency: DataTypes.STRING
+    currency: DataTypes.STRING,
+    userId: DataTypes.INTEGER
   }, {});
   cardNew.associate = function(models) {
     cardNew.belongsTo(models.User);
