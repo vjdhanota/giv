@@ -12,6 +12,9 @@ import {Gallery} from '../../components/gallery';
 import {data} from '../../data/';
 import formatNumber from '../../utils/textUtils';
 
+import {MainRoutes} from '../../config/navigation/routes';
+
+
 export class ProfileV1 extends React.Component {
   static navigationOptions = {
     title: 'User Profile'.toUpperCase()
@@ -29,6 +32,8 @@ export class ProfileV1 extends React.Component {
   render() {
     let name = `${this.user.firstName} ${this.user.lastName}`;
     let images = this.user.images;
+    let navigate = this.props.navigation.navigate;
+
     return (
       <ScrollView style={styles.root}>
         <View style={[styles.header, styles.bordered]}>
@@ -45,11 +50,12 @@ export class ProfileV1 extends React.Component {
             <RkText rkType='secondary1 hintColor'>Charities</RkText>
           </View>
         </View>
-        <View style={styles.buttons}>
-          <RkButton style={styles.button} rkType='clear link'>Subscriptions</RkButton>
-          <View style={styles.separator}/>
+        <View style={styles.buttons, styles.section}>
+          <RkButton style={styles.button, styles.bordered} rkType='clear link'>Subscriptions</RkButton>
+          <RkButton style={styles.button, styles.bordered} rkType='clear link'>Past Payments</RkButton>
+          <RkButton style={styles.button, styles.bordered} rkType='clear link' onPress={() => this.props.navigation.navigate('Settings')}>Settings</RkButton>
+          <RkButton style={styles.button, styles.bordered} rkType='clear link' onPress={() => this.props.navigation.navigate('Login1')}>Log out</RkButton>
         </View>
-        <Gallery items={images}/>
       </ScrollView>
     )
   }
@@ -69,6 +75,8 @@ let styles = RkStyleSheet.create(theme => ({
     paddingVertical: 18,
   },
   bordered: {
+    paddingTop: 20,
+    paddingBottom: 20,
     borderBottomWidth: 1,
     borderColor: theme.colors.border.base
   },
