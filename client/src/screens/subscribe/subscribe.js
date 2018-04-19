@@ -15,6 +15,7 @@ import { data } from "../../data";
 import formatNumber from "../../utils/textUtils";
 const Dimensions = require("Dimensions");
 import { AsyncStorage } from 'react-native';
+import {Dropdown} from 'react-native-material-dropdown';
 
 export class Subscribe extends React.Component {
   static navigationOptions = {
@@ -32,9 +33,8 @@ export class Subscribe extends React.Component {
       charity: charity
     };
   }
-  setFrequency = (index) => {
-    let freq = ['Weekly', 'Monthly', 'Yearly'];
-    this.setState({frequency: freq[parseInt(index)]});
+  setFrequency = (freq) => {
+    this.setState({frequency: freq});
   }
 
   handleSubscribe = async () => {
@@ -47,17 +47,27 @@ export class Subscribe extends React.Component {
   render() {
     let name = `${this.user.firstName} ${this.user.lastName}`;
     let images = this.user.images;
-
+    let frequencies = [{
+      value: 'Weekly'
+    },
+    {
+      value:'Monthly',
+    },
+    {
+      value:'Yearly',
+    }]
     return (
       <ScrollView style={styles.root}>
         <View>
-        <RkText style={{marginTop: 5, marginLeft: 5}} rkType="primary">Amount</RkText>
+        <RkText style={{marginTop: 5, marginLeft: 10}} rkType="primary">Amount</RkText>
         <View style={{flexDirection: "row", margin: 10}}>
           <RkTextInput rkType='form' value={this.state.amount} placeholder='Amount' onChange={(event) => this.setState({amount: event.nativeEvent.text})}/>
         </View>
           
-        <RkText style={{marginLeft: 5}}  rkType="primary">Frequency</RkText>
-          <RkChoiceGroup onChange={(index) => this.setFrequency(index)} style={{margin: 5}} selectedIndex={2} radio>
+        <RkText style={{marginLeft: 10}}  rkType="primary">Frequency</RkText>
+          <Dropdown style={{margin: 5}} onChangeText={(freq) => this.setFrequency(freq) }value={this.state.frequency} data={frequencies}/>
+
+          {/* <RkChoiceGroup onChange={(index) => this.setFrequency(index)} style={{margin: 5}} selectedIndex={2} radio>
             <View style={{flexDirection: "row", alignItems: "center"}}>
             <TouchableOpacity choiceTrigger>
               <View style={{ flexDirection: "row", alignItems: "center", marginLeft:10 }}>
@@ -78,7 +88,9 @@ export class Subscribe extends React.Component {
               </View>
             </TouchableOpacity>
             </View>
-          </RkChoiceGroup>
+          </RkChoiceGroup> */}
+
+          <RkText style={{marginTop: 5, marginLeft: 10}} rkType="primary">Payment Info</RkText> 
 
           <GradientButton style={styles.save} rkType='medium' text='SUBMIT' onPress={this.handleSubscribe}/>
           

@@ -43,18 +43,7 @@ export class AddToCardForm extends React.Component {
   handleCardAdd = async () => {
     const id = await AsyncStorage.getItem('user_id');
     const date = `${this.state.expireMonth}/${this.state.expireYear}`;
-    const req = {userId: id, name: this.state.nameOnCard, bank: "CitiBank", amount: "0", date: date, cardNo: this.state.cardNumber, type: "visa", currency:"usd"}
-    const response = await fetch(`http://localhost:5000/card/add
-                                          ?userId=${id}
-                                          &name=${this.state.nameOnCard}
-                                          &bank=${"CitiBank"}
-                                          &amount=${0}
-                                          &date=${date}
-                                          &cardNo=${this.state.cardNumber}
-                                          &type=${"visa"}
-                                          &currency=${"usd"}
-                                `)
-    console.log(response)
+    const response = await fetch(`http://localhost:5000/card/add?userId=${id}&name=${this.state.nameOnCard}&bank=CitiBank&amount=0&date=${date}&cardNo=${this.state.cardNumber}&type=visa&currency=usd`)
     const body = await response.json();
 
     this.props.navigation.goBack()    

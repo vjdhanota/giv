@@ -38,6 +38,7 @@ app.get('/charityImage/:query', (req,res,next) => {
 });
 
 app.get('/card/add', (req,res,next) => {
+  console.log(req.param('userId'))
   Cards.findOrCreate({where: {
     userId: req.param('userId'),
     name: req.param('name'),
@@ -143,6 +144,16 @@ app.get('/user/sign-in/:info', (req, res, next) => {
   })
 });
 
+app.get('/subscriptions/:id', (req,res) =>{
+  id = req.params.id;
+  Subscription.findAll(
+    {
+    where: {
+      userId: id
+    }
+  }
+).then(subscription => res.send(subscription));
+});
 
 app.get('/charity-search/:query', (req,res,next) => {
   const searchQuery = req.params.query;
