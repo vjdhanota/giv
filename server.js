@@ -55,6 +55,17 @@ app.get('/card/add', (req,res,next) => {
 
 });
 
+app.get('/cards/:id', (req,res,next) => {
+  console.log(req.param('userId'))
+  Cards.findAll({where: {
+    userId: req.params.id
+  }}).then((sub) => {
+    res.send(sub);
+  })
+
+
+});
+
 app.get('/recommendations/:userid', (req,res,next) => {
   console.log(req.params.userid);
   const headersOpt = {  
