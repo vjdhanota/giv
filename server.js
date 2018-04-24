@@ -147,7 +147,7 @@ app.get('/user/sign-in/:info', (req, res, next) => {
 app.get('/subscriptions/:id', (req,res) =>{
   id = req.params.id;
   Subscription.findAll(
-    {
+  {
     where: {
       userId: id
     }

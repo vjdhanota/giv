@@ -6,7 +6,8 @@ import {
   RkPicker,
   RkTextInput,
   RkChoiceGroup,
-  RkChoice
+  RkChoice,
+  RkButton
 } from "react-native-ui-kitten";
 import { Avatar } from "../../components";
 import { Gallery } from "../../components";
@@ -30,13 +31,33 @@ export class Subscribe extends React.Component {
       frequency: "Monthly",
       pikerVisible: false,
       amount: '$',
-      charity: charity
+      charity: charity,
+      cards: [],
+      cardDropdown: [],
+      card: null
     };
   }
-  setFrequency = (freq) => {
-    this.setState({frequency: freq});
+
+  componentWillMount() {
+    this.getUserCards()
+      .then(cards => this.setState({cards}))
+      .then(this.populateCardDropdown)
+  }
+  populateCardDropdown = () => {
+    this.state.cards.map( card  => {
+      console.log(card)
+      this.state.cardDropdown.push({value: `card ending in ${cardNo}`});
+    });
   }
 
+  getUserCards = async () => {
+    const id = await AsyncStorage.getItem('user_id');
+    const response = await fetch(`http://localhost:5000/cards/${id}`)    
+    const body = await response.json();
+    return body;
+  }
+  setFrequency = freq => this.setState({frequency: freq});
+  setCard = card => this.setState({card})
   handleSubscribe = async () => {
     const id = await AsyncStorage.getItem('user_id');
     let req = {charity_ein: this.state.charity.ein, frequency: this.state.frequency, amount: this.state.amount, userId: id}
@@ -56,6 +77,9 @@ export class Subscribe extends React.Component {
     {
       value:'Yearly',
     }]
+
+    let cards = this.state.cardDropdown ? this.state.cardDropdown : null
+    console.log(this.state.cardDropdown)
     return (
       <ScrollView style={styles.root}>
         <View>
@@ -65,34 +89,13 @@ export class Subscribe extends React.Component {
         </View>
           
         <RkText style={{marginLeft: 10}}  rkType="primary">Frequency</RkText>
-          <Dropdown style={{margin: 5}} onChangeText={(freq) => this.setFrequency(freq) }value={this.state.frequency} data={frequencies}/>
+        <Dropdown style={{margin: 5}} onChangeText={(freq) => this.setFrequency(freq) }value={this.state.frequency} data={frequencies}/>
 
-          {/* <RkChoiceGroup onChange={(index) => this.setFrequency(index)} style={{margin: 5}} selectedIndex={2} radio>
-            <View style={{flexDirection: "row", alignItems: "center"}}>
-            <TouchableOpacity choiceTrigger>
-              <View style={{ flexDirection: "row", alignItems: "center", marginLeft:10 }}>
-                <RkChoice rkType="radio" />
-                <Text>Weekly</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity choiceTrigger>
-              <View style={{ flexDirection: "row", alignItems: "center",  marginLeft:10 }}>
-                <RkChoice rkType="radio" />
-                <Text>Monthly</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity choiceTrigger>
-              <View style={{ flexDirection: "row", alignItems: "center",  marginLeft:10 }}>
-                <RkChoice rkType="radio" />
-                <Text>Yearly</Text>
-              </View>
-            </TouchableOpacity>
-            </View>
-          </RkChoiceGroup> */}
+        <RkText style={{marginTop: 5, marginLeft: 10}} rkType="primary">Payment Info</RkText> 
+        <Dropdown style={{margin: 5, }} onChangeText={(card) => this.setCard(card) }value={this.state.card} data={cards}/>
+        <RkButton style={{margin: 5}} rkType='success small' onPress={() => this.props.navigation.navigate('AddToCardForm')} >Add Card</RkButton>
 
-          <RkText style={{marginTop: 5, marginLeft: 10}} rkType="primary">Payment Info</RkText> 
-
-          <GradientButton style={styles.save} rkType='medium' text='SUBMIT' onPress={this.handleSubscribe}/>
+        <GradientButton style={styles.save} rkType='medium' text='SUBMIT' onPress={this.handleSubscribe}/>
           
          
         </View>
