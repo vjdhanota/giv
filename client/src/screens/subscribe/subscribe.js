@@ -33,21 +33,31 @@ export class Subscribe extends React.Component {
       amount: '$',
       charity: charity,
       cards: [],
+      cardsDict: {},
       cardDropdown: [],
-      card: null
+      card: "Please select a card...",
+      cardForPayment: {}
+
     };
   }
 
   componentWillMount() {
-    this.getUserCards()
-      .then(cards => this.setState({cards}))
-      .then(this.populateCardDropdown)
+    this.getUserCards().then(cards => {
+      this.setState({cards: cards}); 
+    }).then(() => this.populateCardDropdown())
   }
-  populateCardDropdown = () => {
+  populateCardDropdown = async () => {
     this.state.cards.map( card  => {
-      console.log(card)
-      this.state.cardDropdown.push({value: `card ending in ${cardNo}`});
+      this.setState({cardDropdown: [...this.state.cardDropdown, {value: `${card.name}'s card ending in ${card.cardNo}`}]})
+      this.state.cardsDict[`${card.name}'s card ending in ${card.cardNo}`] = card;
     });
+
+  }
+
+  addCard = (card) => {
+    console.log(card);
+    this.setState({cardDropdown: [...this.state.cardDropdown, {value: `${card.name}'s card ending in ${card.cardNo}`}]})
+    this.state.cardsDict[`${card.name}'s card ending in ${card.cardNo}`] = card;
   }
 
   getUserCards = async () => {
@@ -57,7 +67,9 @@ export class Subscribe extends React.Component {
     return body;
   }
   setFrequency = freq => this.setState({frequency: freq});
-  setCard = card => this.setState({card})
+  setCard = card => this.setState({card: this.state.cardsDict[card]});
+    
+  
   handleSubscribe = async () => {
     const id = await AsyncStorage.getItem('user_id');
     let req = {charity_ein: this.state.charity.ein, frequency: this.state.frequency, amount: this.state.amount, userId: id}
@@ -78,24 +90,32 @@ export class Subscribe extends React.Component {
       value:'Yearly',
     }]
 
-    let cards = this.state.cardDropdown ? this.state.cardDropdown : null
-    console.log(this.state.cardDropdown)
+    let cards = this.state.cardDropdown.length > 0 ? this.state.cardDropdown : [{value: 'card'}]
+    // let dropdown = 
     return (
       <ScrollView style={styles.root}>
-        <View>
-        <RkText style={{marginTop: 5, marginLeft: 10}} rkType="primary">Amount</RkText>
-        <View style={{flexDirection: "row", margin: 10}}>
-          <RkTextInput rkType='form' value={this.state.amount} placeholder='Amount' onChange={(event) => this.setState({amount: event.nativeEvent.text})}/>
+        <View style={{marginTop: 15, marginLeft: 5}}>
+        <RkText style={{ marginLeft: 10}} rkType="primary">Amount</RkText>
+        <View style={{flexDirection: "row"}}>
+          <RkTextInput rkType='form' style={styles.moneyInput} value={this.state.amount} placeholder='Amount' onChange={(event) => this.setState({amount: event.nativeEvent.text})}/>
         </View>
           
-        <RkText style={{marginLeft: 10}}  rkType="primary">Frequency</RkText>
-        <Dropdown style={{margin: 5}} onChangeText={(freq) => this.setFrequency(freq) }value={this.state.frequency} data={frequencies}/>
+        <View style={{marginTop: 60, marginLeft: 5}} >
+          <RkText style={{marginLeft: 5}}  rkType="primary">Frequency</RkText>
+          <View style={styles.dropdown}>
+            <Dropdown onChangeText={(freq) => this.setFrequency(freq) }value={this.state.frequency} data={frequencies}/>
+          </View>
+        </View>
 
-        <RkText style={{marginTop: 5, marginLeft: 10}} rkType="primary">Payment Info</RkText> 
-        <Dropdown style={{margin: 5, }} onChangeText={(card) => this.setCard(card) }value={this.state.card} data={cards}/>
-        <RkButton style={{margin: 5}} rkType='success small' onPress={() => this.props.navigation.navigate('AddToCardForm')} >Add Card</RkButton>
+      <View style={{marginTop: 60, marginLeft: 5}} >
+        <RkText style={{marginLeft: 5}}  rkType="primary">Payment Info</RkText>
+        <View style={styles.dropdown}>
+          <Dropdown  onChangeText={(card) => this.setCard(card) }value={this.state.card} data={cards}/>
+        </View> 
+        <RkButton style={{marginLeft:5,marginTop: 10}} rkType='primary' onPress={() => this.props.navigation.navigate('AddToCardForm', {addCard: this.addCard})} >Add Card</RkButton>
+      </View>
 
-        <GradientButton style={styles.save} rkType='medium' text='SUBMIT' onPress={this.handleSubscribe}/>
+        <GradientButton style={styles.save} rkType='medium' text='SUBSCRIBE' onPress={this.handleSubscribe}/>
           
          
         </View>
@@ -108,11 +128,19 @@ let styles = RkStyleSheet.create(theme => ({
   root: {
     backgroundColor: theme.colors.screen.base,
   },
+  moneyInput: {
+    border: 'none'
+  },
   save: {
-    marginVertical: 20,
-    width: "40%",
+    marginTop: 130,
+    width: "95%",
     marginLeft: 10,
+    marginRight: 13,
     
+  },
+  dropdown: {
+    marginLeft: 5,
+    marginRight: 5
   },
   header: {
     alignItems: "center",

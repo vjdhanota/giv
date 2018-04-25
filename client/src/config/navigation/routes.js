@@ -200,7 +200,11 @@ export const MainRoutes = [
 
 let menuRoutes = _.cloneDeep(MainRoutes);
 menuRoutes.unshift({
+<<<<<<< HEAD
   id: 'Subscribe',
+=======
+  id: 'Login1',
+>>>>>>> c6bbea0b96b7232452206cac6060ded5ba294a7f
   title: 'Start',
   screen: Screens.Subscribe,
   children: []
