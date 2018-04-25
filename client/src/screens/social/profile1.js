@@ -32,7 +32,8 @@ export class ProfileV1 extends React.Component {
         name: " ",
         email: " "
       },
-      subscriptions: []
+      subscriptions: [],
+      subInfo: []
       }
      this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     
@@ -54,13 +55,16 @@ export class ProfileV1 extends React.Component {
       } 
      
       this.data = this.ds.cloneWithRows(this.state.subscriptions);
+      let i = 0;
       let subs = this.state.subscriptions.map(sub =>{
-        let subInfo = this.getCharityInfo(sub.charity_ein);
-        sub.subInfo = subInfo;
-          return sub;
+         this.getCharityInfo(sub.charity_ein).then(info =>{
+           let tmp = this.state.subscriptions;
+           tmp[i].subInfo = info;
+           i++;
+          this.setState({subscriptions: tmp})
+         });
       })
-      this.setState({subscriptions: subs},()=> console.log(this.state.subscriptions))
-      //console.log(subs)
+     
      })
     })
     
@@ -93,15 +97,25 @@ getCharityInfo = async (ein) => {
   renderRow(row) {
 
   
-    console.log(row)
+    const subs = this.state.subscriptions
     return (
+
+      {subs.length > 0 &&
+      
       <View style={stylez.container}>
-        {/* <Avatar img={row.user.photo}
-                rkType='circle'
-                style={stylez.avatar}
-                badge={row.type}/> */}
-      <RkText>hi</RkText>
+      <View style={stylez.content}>
+        <View style={stylez.mainContent}>
+          <View style={stylez.text}>
+            <RkText>
+              <RkText rkType='header6'>{row.subInfo.charityName}</RkText>
+              <RkText rkType='primary2'> {row.UserId}</RkText>
+            </RkText>
+          </View>
+      
+        </View>
       </View>
+    </View>
+      }
     )
   }
   render() {
