@@ -51,8 +51,6 @@ app.get('/card/add', (req,res,next) => {
   }}).then((sub) => {
     res.send(sub);
   })
-
-
 });
 
 app.get('/cards/:id', (req,res,next) => {
@@ -155,6 +153,15 @@ app.get('/user/sign-in/:info', (req, res, next) => {
   })
 });
 
+app.get('/user/:id', (req, res, next) => {
+  const id= req.params.id;
+  models.User.findOne({where: {
+    id: id,
+  }}).then( (user) => {
+    res.send(user);
+  })
+});
+
 app.get('/subscriptions/:id', (req,res) =>{
   id = req.params.id;
   Subscription.findAll(
@@ -171,6 +178,13 @@ app.get('/charity-search/:query', (req,res,next) => {
   const query = `https://api.data.charitynavigator.org/v2/Organizations?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935&pageSize=20&pageNum=1&rated=true&search=${searchQuery}`;
   fetch(query).then(response => response.json()).then(resJson => res.send(resJson));
 })
+
+app.get('/charityinfo/:ein', (req,res,next) => {
+  const searchQuery = req.params.query;
+  const query = `https://api.data.charitynavigator.org/v2/Organizations/${req.params.ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
+  fetch(query).then(response => response.json()).then(resJson => res.send(resJson));
+})
+
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
