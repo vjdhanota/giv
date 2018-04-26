@@ -3,7 +3,8 @@ import {
   View,
   ScrollView,
   ListView,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import {
   RkText,
@@ -94,6 +95,10 @@ getCharityInfo = async (ein) => {
    return body;
   }
 
+  getHumanDate = (date) => new Date(date).toDateString();
+  navigateToDetails = (row) => {
+    this.props.navigation.navigate('Article', {charity: row})
+  }
  
   renderRow = (row) => {
 
@@ -101,9 +106,10 @@ getCharityInfo = async (ein) => {
     const subs = this.state.subscriptions;
     
     const view = row.subInfo ? <View style={stylez.container}>
+    <TouchableOpacity onPress={() => this.navigateToDetails(row.subInfo)}>
     <View style={stylez.content}>
     <Image source={{uri: row.subInfo.cause.image}}
-                style={{width: 50, height: 50 , borderRadius: 25}}
+                style={{width: 50, height: 50, marginRight: 8, borderRadius: 25, alignSelf: 'center'}}
                />
       <View style={stylez.mainContent}>
         <View style={stylez.text}>
@@ -120,8 +126,8 @@ getCharityInfo = async (ein) => {
             </RkText>
             {"\n"}
             <RkText>
-              <RkText rkType='secondary2'>Subscribed At: </RkText>
-              <RkText rkType='primary2'> {row.createdAt.toDateString() }</RkText>
+              <RkText rkType='secondary2'>Suscriber since: </RkText>
+              <RkText rkType='primary2'> {this.getHumanDate(row.createdAt) }</RkText>
             </RkText>
 
           </RkText>
@@ -129,10 +135,11 @@ getCharityInfo = async (ein) => {
     
       </View>
     </View>
+    </TouchableOpacity>
   </View> : <View></View>
 
     return (
-      <View>
+      <View >
         {view}  
       </View>
     )
@@ -246,8 +253,8 @@ let stylez = RkStyleSheet.create(theme => ({
     marginBottom: 5,
   },
   content: {
-    flex: 1,
-    marginLeft: 16,
+    flexDirection: 'row',
+    marginLeft: 5,
     marginRight: 0
   },
   mainContent: {
@@ -256,7 +263,6 @@ let stylez = RkStyleSheet.create(theme => ({
   img: {
     height: 50,
     width: 50,
-    margin: 0
   },
   attachment: {
     position: 'absolute',

@@ -3,7 +3,8 @@ import {
   ScrollView,
   Image,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import {
   RkCard,
@@ -22,7 +23,8 @@ export class Article extends React.Component {
     title: 'Article View'.toUpperCase()
   };
   state = {
-    img: ''
+    img: '',
+    isSubbed: false
   }
   constructor(props) {
     super(props);
@@ -37,6 +39,18 @@ export class Article extends React.Component {
     this.getImage(this.data);
   }
 
+  componentDidMount() {
+    this.checkIfSubbed().then(subbed => this.setState({isSubbed: subbed}));
+  }
+
+  checkIfSubbed = async () => {
+    const userId = await AsyncStorage.getItem('user_id');
+    const charityId = this.data.ein
+    const response = await fetch(`http://localhost:5000/charity/check?userId=${id}&ein=${charityId}`)    
+    const body = await response.json();
+    console.log(body);
+   return body;    
+  }
   getImage = async (row) => {
     let city = row.mailingAddress.city;
     let state = row.mailingAddress.stateOrProvince;
@@ -50,7 +64,14 @@ export class Article extends React.Component {
   navigateToSub = () => {
     this.props.navigation.navigate('Subscribe', {data: this.data});
   }
+
+  handleUnsubscribe = () => {
+    console.log('hi');
+  }
   render() {
+    const subButton = this.state.isSubbed ? <RkButton onPress={() => this.handleUnsubscribe()}>Unsubscribe</RkButton>
+                                          : <RkButton onPress={() => this.navigateToSub()}>Subscribe</RkButton>
+    
     return (
       <ScrollView style={styles.root}>
         <RkCard rkType='article'>
@@ -70,7 +91,7 @@ export class Article extends React.Component {
             </View>
           </View>
           <View rkCardFooter>
-          <RkButton onPress={() => this.navigateToSub()}>Subscribe</RkButton>
+          {subButton}
             <SocialBar/>
           </View>
         </RkCard>
