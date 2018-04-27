@@ -37,6 +37,44 @@ app.get('/charityImage/:query', (req,res,next) => {
 
 });
 
+app.get('charity/check',(req,res,next)=>{
+    userId = req.param('userId'); 
+    ein = req.param('ein');
+    Subscription.findAll(
+      {
+      where: {
+        userId: id
+      }
+    }
+  ).then(subscription => {
+    let unique = true;
+    
+    if (!Array.isArray(subscription)) {
+      subscription = [subscription]; 
+    } 
+    subscription.map(sub => {
+      if(sub.charity_ein == ein){
+        unique = false;
+      }
+    })
+    res.send(unique)
+  });
+})
+
+app.get('charity/delete/:id',(req,res,next)=>{
+  charityId = req.params.id; 
+  
+  Subscription.delete(
+    {
+    where: {
+      id: charityId
+    }
+  }
+).then(subscription => {
+  res.send(deleted)
+});
+})
+
 app.get('/card/add', (req,res,next) => {
   console.log(req.param('userId'))
   Cards.findOrCreate({where: {
