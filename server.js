@@ -37,7 +37,7 @@ app.get('/charityImage/:query', (req,res,next) => {
 
 });
 
-app.get('charity/check',(req,res,next)=>{
+app.get('/charity/check',(req,res,next)=>{
     userId = req.param('userId'); 
     ein = req.param('ein');
     Subscription.findAll(
@@ -61,7 +61,7 @@ app.get('charity/check',(req,res,next)=>{
   });
 })
 
-app.get('charity/delete/:id',(req,res,next)=>{
+app.get('/charity/delete/:id',(req,res,next)=>{
   charityId = req.params.id; 
   
   Subscription.delete(
