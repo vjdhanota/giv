@@ -45,7 +45,7 @@ export class AddToCardForm extends React.Component {
     const date = `${this.state.expireMonth}/${this.state.expireYear}`;
     const response = await fetch(`http://localhost:5000/card/add?userId=${id}&name=${this.state.nameOnCard}&bank=CitiBank&amount=0&date=${date}&cardNo=${this.state.cardNumber}&type=visa&currency=usd`)
     const body = await response.json();
-
+    this.props.navigation.state.params.addCard(body[0])
     this.props.navigation.goBack()    
   }
   hidePicker() {

@@ -37,41 +37,42 @@ app.get('/charityImage/:query', (req,res,next) => {
 
 });
 
+
 app.get('/charity/check',(req,res,next)=>{
-    userId = req.param('userId'); 
-    ein = req.param('ein');
-    Subscription.findAll(
-      {
-      where: {
-        userId: id
-      }
+  userId = req.param('userId'); 
+  ein = req.param('ein');
+  Subscription.findAll(
+    {
+    where: {
+      userId: id
     }
-  ).then(subscription => {
-    let unique = true;
-    
-    if (!Array.isArray(subscription)) {
-      subscription = [subscription]; 
-    } 
-    subscription.map(sub => {
-      if(sub.charity_ein == ein){
-        unique = false;
-      }
-    })
-    res.send(unique)
-  });
+  }
+).then(subscription => {
+  let subbed = false;
+  if (!Array.isArray(subscription)) {
+    subscription = [subscription]; 
+  } 
+  subscription.map(sub => {
+    if(sub.charity_ein == ein){
+      subbed = true;
+    }
+  })
+  res.send(subbed)
+});
 })
 
 app.get('/charity/delete/:id',(req,res,next)=>{
   charityId = req.params.id; 
-  
-  Subscription.delete(
+  Subscription.findOne(
     {
     where: {
       id: charityId
     }
   }
 ).then(subscription => {
-  res.send(deleted)
+  return subscription.destroy()
+}).then(() => {
+  res.send(true)
 });
 })
 
@@ -121,7 +122,7 @@ app.get('/recommendations/:userid', (req,res,next) => {
     json: true,
   }, async function(error, response, body){
     var charities = [];
-    for(let i = 0; i < 2; i++) {
+    for(let i = 0; i < 20; i++) {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
@@ -203,7 +204,7 @@ app.get('/user/:id', (req, res, next) => {
 app.get('/subscriptions/:id', (req,res) =>{
   id = req.params.id;
   Subscription.findAll(
-    {
+  {
     where: {
       userId: id
     }

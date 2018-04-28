@@ -2,7 +2,9 @@ import React from 'react';
 import {
   View,
   ScrollView,
-  ListView
+  ListView,
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import {
   RkText,
@@ -71,7 +73,7 @@ export class ProfileV1 extends React.Component {
   }
 
 getCharityInfo = async (ein) => {
-  const response = await fetch(`http://10.252.200.66:5000/charityinfo/${ein}`)    
+  const response = await fetch(`http://localhost:5000/charityinfo/${ein}`)    
   const body = await response.json();
 
  return body;
@@ -79,7 +81,7 @@ getCharityInfo = async (ein) => {
   getUser = async () => {
    const id = await AsyncStorage.getItem('user_id');
    
-    const response = await fetch(`http://10.252.200.66:5000/user/${id}`)    
+    const response = await fetch(`http://localhost:5000/user/${id}`)    
     const body = await response.json();
     this.setState({userId: id})
     return body;
@@ -87,35 +89,59 @@ getCharityInfo = async (ein) => {
   }
 
   getSubscriptions = async () => {
-    const response = await fetch(`http://10.252.200.66:5000/subscriptions/${this.state.userId}`)    
+    const response = await fetch(`http://localhost:5000/subscriptions/${this.state.userId}`)    
     const body = await response.json();
   
    return body;
   }
 
+  getHumanDate = (date) => new Date(date).toDateString();
+  navigateToDetails = (row) => {
+    this.props.navigation.navigate('Article', {charity: row.subInfo, sub: row})
+  }
  
-  renderRow(row) {
+  renderRow = (row) => {
 
   
-    const subs = this.state.subscriptions
-    return (
-
-      {subs.length > 0 &&
-      
-      <View style={stylez.container}>
-      <View style={stylez.content}>
-        <View style={stylez.mainContent}>
-          <View style={stylez.text}>
+    const subs = this.state.subscriptions;
+    
+    const view = row.subInfo ? <View style={stylez.container}>
+    <TouchableOpacity onPress={() => this.navigateToDetails(row)}>
+    <View style={stylez.content}>
+    <Image source={{uri: row.subInfo.cause.image}}
+                style={{width: 50, height: 50, marginRight: 8, borderRadius: 25, alignSelf: 'center'}}
+               />
+      <View style={stylez.mainContent}>
+        <View style={stylez.text}>
+          <RkText>
+            <RkText rkType='header6'>{row.subInfo.charityName}</RkText>
             <RkText>
-              <RkText rkType='header6'>{row.subInfo.charityName}</RkText>
-              <RkText rkType='primary2'> {row.UserId}</RkText>
+              <RkText rkType='secondary2'> Frequency: </RkText>
+              <RkText rkType='primary2'> {row.frequency}</RkText>
             </RkText>
-          </View>
-      
+            {"\n"}
+            <RkText>
+              <RkText rkType='secondary2'>Amount: </RkText>
+              <RkText rkType='primary2'> {row.amount}</RkText>
+            </RkText>
+            {"\n"}
+            <RkText>
+              <RkText rkType='secondary2'>Suscriber since: </RkText>
+              <RkText rkType='primary2'> {this.getHumanDate(row.createdAt) }</RkText>
+            </RkText>
+
+          </RkText>
         </View>
+    
       </View>
     </View>
-      }
+    </TouchableOpacity>
+  </View> : <View></View>
+
+    return (
+      <View >
+        {view}  
+      </View>
     )
   }
   render() {
@@ -140,11 +166,9 @@ getCharityInfo = async (ein) => {
             <RkText rkType='secondary1 hintColor'>Subscriptions</RkText>
           </View>
         </View>
-        <View style={styles.buttons, styles.section}>
-          <RkButton style={styles.button, styles.bordered} rkType='clear link'>Subscriptions</RkButton>
-          <RkButton style={styles.button, styles.bordered} rkType='clear link'>Past Payments</RkButton>
-          <RkButton style={styles.button, styles.bordered} rkType='clear link' onPress={() => this.props.navigation.navigate('Settings')}>Settings</RkButton>
-          <RkButton style={styles.button, styles.bordered} rkType='clear link' onPress={() => this.props.navigation.navigate('Login1')}>Log out</RkButton>
+        <View style={styles.buttons}>
+          <RkButton style={styles.button} rkType='clear link'>Subscriptions</RkButton>
+          {/* <RkButton style={styles.button} rkType='clear link' onPress={() => this.props.navigation.navigate('Settings')}>Settings</RkButton> */}
         </View>
         <View>
         <ListView
@@ -171,10 +195,7 @@ let styles = RkStyleSheet.create(theme => ({
     paddingVertical: 18,
   },
   bordered: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderColor: theme.colors.border.base
+    
   },
   container: {
     padding: 16,
@@ -196,15 +217,24 @@ let styles = RkStyleSheet.create(theme => ({
     flexDirection: 'row',
     flex: 0,
     width: 1,
-    height: 42
+    height: 42,
+    
   },
   buttons: {
     flexDirection: 'row',
     paddingVertical: 8,
+    paddingTop: 20,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border.base
   },
   button: {
     flex: 1,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    // paddingTop: 20,
+    // paddingBottom: 20,
+    // borderBottomWidth: 1,
+    // borderColor: theme.colors.border.base
   }
 }));
 let stylez = RkStyleSheet.create(theme => ({
@@ -223,8 +253,8 @@ let stylez = RkStyleSheet.create(theme => ({
     marginBottom: 5,
   },
   content: {
-    flex: 1,
-    marginLeft: 16,
+    flexDirection: 'row',
+    marginLeft: 5,
     marginRight: 0
   },
   mainContent: {
@@ -233,7 +263,6 @@ let stylez = RkStyleSheet.create(theme => ({
   img: {
     height: 50,
     width: 50,
-    margin: 0
   },
   attachment: {
     position: 'absolute',

@@ -200,9 +200,9 @@ export const MainRoutes = [
 
 let menuRoutes = _.cloneDeep(MainRoutes);
 menuRoutes.unshift({
-  id: 'Login1',
+  id: 'ProfileV1',
   title: 'Start',
-  screen: Screens.LoginV1,
+  screen: Screens.ProfileV1,
   children: []
 },);
 
