@@ -25,13 +25,26 @@ app.get('/charityImage/:query', (req,res,next) => {
 
   googlePlaces.textSearch(parameters, function (error, response) {
     if (error) throw error;
-    if(response.results[0].photos) {
+    if(response && response.results [0] &&response.results[0].photos) {
       googlePlaces.imageFetch({photoreference: response.results[0].photos[0].photo_reference,sensor: false}, function (error, response) {
           if (error) throw error;
           
          res.send(response)
   
       });
+    }else{
+      let images = []
+      images.push("https://i.pinimg.com/originals/4e/52/f5/4e52f55de5b1dfb2b012bcdaf94201a6.jpg")
+      images.push("https://pilbox.themuse.com/image.jpg?url=https%3A%2F%2Fassets.themuse.com%2Fuploaded%2Fcompanies%2F74%2Fpages%2F723%2Ff1.jpg%3Fv%3Dc001d3541ab80c6518eff224efd248924c90f1d4e6fd507dd9ed5d26ac4f6a91&h=960&prog=1&w=1300")
+      images.push("https://www.crowntrade.co.uk/wp-content/uploads/2014/03/crown-trade-charity-sos2.jpg")
+      images.push("https://cdn.trendhunterstatic.com/thumbs/charity-office.jpeg")
+      images.push("https://assets.themuse.com/uploaded/companies/74/office/71/f1.jpg?v=a730e4f5f0c4a68fad641f26dac213cd2d297543f312faa597830fc6f8164093")
+      images.push("https://i.pinimg.com/originals/4d/c6/12/4dc6122ce607a6fd03742262b9a813f1.jpg")
+      images.push("http://www.renaisi.com/wp-content/uploads/2016/05/Andie-workspace-blog-2.jpg")
+      images.push("http://blog.onabags.com/wp-content/uploads/2015/12/charitywater_office-1040545-1024x768.jpg")
+      images.push("https://i2.wp.com/www.southleedslife.com/wp-content/uploads/2017/04/People-Matters-Office.jpg?fit=567%2C365")
+      let rand =  Math.floor(Math.random() * 9);
+      res.send(images[rand])
     }
   });
 
