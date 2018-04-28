@@ -97,7 +97,7 @@ export class Article extends React.Component {
           </View>
           <View rkCardFooter>
           {subButton}
-            <SocialBar/>
+          <SocialBar/>
           </View>
         </RkCard>
       </ScrollView>

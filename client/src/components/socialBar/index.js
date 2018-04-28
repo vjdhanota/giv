@@ -26,6 +26,7 @@ export class SocialBar extends RkComponent {
     this.shares = this.props.shares || 5;
     this.state = {
       likes: this.likes,
+      hasLiked: false
       //comments: this.comments,
       //shares: this.shares,
     }
@@ -39,10 +40,15 @@ export class SocialBar extends RkComponent {
     //let shares = this.state.shares + (this.props.showLabel ? ' Shares' : '');
 
     let updateLikes = () => {
-      if (this.state.likes === this.likes)
+      if (this.state.likes === this.likes) {
+
+        this.setState({hasLiked: true })
         this.setState({likes: this.state.likes + 1});
-      else
+      }
+      else {
+        this.setState({hasLiked: false })
         this.setState({likes: this.likes});
+      }
     };
 
     /*let updateComments = () => {
@@ -59,12 +65,16 @@ export class SocialBar extends RkComponent {
         this.setState({shares: this.shares});
     };*/
 
-
+    const likeButton = this.state.hasLiked ? 
+      <RkText rkType='awesome primary' style={icon}>{FontAwesome.heart}</RkText> :
+      <RkText rkType='awesome primary' style={icon}>{FontAwesome.emptyHeart}</RkText>
+      
+    
     return (
       <View style={container}>
         <View style={section}>
           <RkButton rkType='clear' onPress={updateLikes}>
-            <RkText rkType='awesome primary' style={icon}>{FontAwesome.heart}</RkText>
+            {likeButton}
             <RkText rkType='primary primary4' style={label}>{likes}</RkText>
           </RkButton>
         </View>
