@@ -29,6 +29,7 @@ export class Article extends React.Component {
   constructor(props) {
     super(props);
     let {params} = this.props.navigation.state;
+    // this.setState({subId: params.sub.id})
     let id = params ? params.id : 1;
     this.data = params.charity;
 
@@ -41,14 +42,16 @@ export class Article extends React.Component {
 
   componentDidMount() {
     this.checkIfSubbed().then(subbed => this.setState({isSubbed: subbed}));
+    if(this.props.navigation.state.params.sub) {
+      this.setState({subId: this.props.navigation.state.params.sub.id})
+    }
   }
 
   checkIfSubbed = async () => {
     const userId = await AsyncStorage.getItem('user_id');
     const charityId = this.data.ein
-    const response = await fetch(`http://localhost:5000/charity/check?userId=${id}&ein=${charityId}`)    
+    const response = await fetch(`http://localhost:5000/charity/check?userId=${userId}&ein=${charityId}`)    
     const body = await response.json();
-    console.log(body);
    return body;    
   }
   getImage = async (row) => {
@@ -65,12 +68,14 @@ export class Article extends React.Component {
     this.props.navigation.navigate('Subscribe', {data: this.data});
   }
 
-  handleUnsubscribe = () => {
-    console.log('hi');
+  handleUnsubscribe = async () => {
+    const response = await fetch(`http://localhost:5000/charity/delete/${this.state.subId}`);
+    const body = await response.json()
+    this.props.navigation.navigate('ProfileV1');
   }
   render() {
-    const subButton = this.state.isSubbed ? <RkButton onPress={() => this.handleUnsubscribe()}>Unsubscribe</RkButton>
-                                          : <RkButton onPress={() => this.navigateToSub()}>Subscribe</RkButton>
+    const subButton = this.state.isSubbed ? <RkButton style={{width: '90%'}} onPress={() => this.handleUnsubscribe()}>Unsubscribe</RkButton>
+                                          : <RkButton style={{width: '90%'}} onPress={() => this.navigateToSub()}>Subscribe</RkButton>
     
     return (
       <ScrollView style={styles.root}>

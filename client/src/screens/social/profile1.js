@@ -97,7 +97,7 @@ getCharityInfo = async (ein) => {
 
   getHumanDate = (date) => new Date(date).toDateString();
   navigateToDetails = (row) => {
-    this.props.navigation.navigate('Article', {charity: row})
+    this.props.navigation.navigate('Article', {charity: row.subInfo, sub: row})
   }
  
   renderRow = (row) => {
@@ -106,7 +106,7 @@ getCharityInfo = async (ein) => {
     const subs = this.state.subscriptions;
     
     const view = row.subInfo ? <View style={stylez.container}>
-    <TouchableOpacity onPress={() => this.navigateToDetails(row.subInfo)}>
+    <TouchableOpacity onPress={() => this.navigateToDetails(row)}>
     <View style={stylez.content}>
     <Image source={{uri: row.subInfo.cause.image}}
                 style={{width: 50, height: 50, marginRight: 8, borderRadius: 25, alignSelf: 'center'}}
@@ -168,7 +168,7 @@ getCharityInfo = async (ein) => {
         </View>
         <View style={styles.buttons}>
           <RkButton style={styles.button} rkType='clear link'>Subscriptions</RkButton>
-          <RkButton style={styles.button} rkType='clear link' onPress={() => this.props.navigation.navigate('Settings')}>Settings</RkButton>
+          {/* <RkButton style={styles.button} rkType='clear link' onPress={() => this.props.navigation.navigate('Settings')}>Settings</RkButton> */}
         </View>
         <View>
         <ListView
