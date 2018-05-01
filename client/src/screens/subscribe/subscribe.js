@@ -49,8 +49,9 @@ export class Subscribe extends React.Component {
   }
   populateCardDropdown = async () => {
     this.state.cards.map( card  => {
-      this.setState({cardDropdown: [...this.state.cardDropdown, {value: `${card.name}'s card ending in ${card.cardNo}`}]})
-      this.state.cardsDict[`${card.name}'s card ending in ${card.cardNo}`] = card;
+      const lastFour = card.cardNo.substr(card.cardNo.length-4)
+      this.setState({cardDropdown: [...this.state.cardDropdown, {value: `${card.name}'s card ending in ${lastFour}`}]})
+      this.state.cardsDict[`${card.name}'s card ending in ${lastFour}`] = card;
     });
 
   }

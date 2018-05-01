@@ -20,7 +20,7 @@ import { NavigationActions } from 'react-navigation';
 
 export class Article extends React.Component {
   static navigationOptions = {
-    title: 'Article View'.toUpperCase()
+    title: 'Charity'.toUpperCase()
   };
   state = {
     img: '',
@@ -78,8 +78,8 @@ export class Article extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
   render() {
-    const subButton = this.state.isSubbed ? <RkButton style={{width: '90%'}} onPress={() => this.handleUnsubscribe()}>Unsubscribe</RkButton>
-                                          : <RkButton style={{width: '90%'}} onPress={() => this.navigateToSub()}>Subscribe</RkButton>
+    const subButton = this.state.isSubbed ? <RkButton style={{width: '80%'}} onPress={() => this.handleUnsubscribe()}>Unsubscribe</RkButton>
+                                          : <RkButton style={{width: '80%'}} onPress={() => this.navigateToSub()}>Subscribe</RkButton>
     
     return (
       <ScrollView style={styles.root}>

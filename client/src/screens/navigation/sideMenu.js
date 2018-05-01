@@ -34,9 +34,9 @@ export class SideMenu extends React.Component {
   }
 
   _renderIcon() {
-    if (RkTheme.current.name === 'light')
-      return <Image style={styles.icon} source={require('../../assets/icons/iconPlus.png')}/>;
-    return <Image style={styles.icon} source={require('../../assets/icons/iconPlus.png')}/>
+    // if (RkTheme.current.name === 'light')
+    //   return <Image style={styles.icon} source={require('../../assets/icons/iconPlus.png')}/>;
+    // return <Image style={styles.icon} source={require('../../assets/icons/iconPlus.png')}/>
 
   }
 

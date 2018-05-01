@@ -20,8 +20,8 @@ export class SocialBar extends RkComponent {
 
   constructor(props) {
     super(props);
-
-    this.likes = this.props.likes || 0;
+    let likes = 25 + Math.floor(Math.random() * 50)
+    this.likes = this.props.likes || likes;
     this.comments = this.props.comments || 26;
     this.shares = this.props.shares || 5;
     this.state = {
