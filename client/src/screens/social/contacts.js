@@ -21,7 +21,6 @@ import {FontAwesome} from '../../assets/icons';
 import {SocialBar} from '../../components';
 import Spinner from 'react-native-loading-spinner-overlay';
 const Dimensions = require('Dimensions');
-
 export class Contacts extends React.Component {
   static navigationOptions = {
     title: 'SEARCH'.toUpperCase()
@@ -31,24 +30,28 @@ export class Contacts extends React.Component {
   constructor(props) {
     super(props);
     this.charityarticles = data.getcharityArticles();
-
+    this.getUser().then(user => this.setState({user}))
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       data: ds.cloneWithRows(this.charityarticles),
       showingRecommendations: false,
       header: "Recommended For You:",
-      loading: true
+      loading: true,
+      recs: []
     };
 
     this.filter = this._filter.bind(this);
     this.setData = this._setData.bind(this);
+    this.addData = this._addData.bind(this);
     this.fetchUserRecommendations();
-    
     this.renderHeader = this._renderHeader.bind(this);
     this.renderRow = this._renderRow.bind(this);
 
   }
-
+  getUser = async () => {
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    return user;
+  }
   _setData(data) {
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.setState({
@@ -56,11 +59,18 @@ export class Contacts extends React.Component {
     })
   }
 
+  _addData(newData) {
+    // let ds = this.state.data.concat(newData)
+    // this.setState({
+    //   data: ds.cloneWithRows(this.state.data)
+    // })
+  }
+
    _renderRow(row) {
     let name = row.charityName ;
-    let city = row.mailingAddress.city;
-    let state = row.mailingAddress.stateOrProvince;
-    let query = name+' '+city+','+state;
+    // let city = row.mailingAddress.city;
+    // let state = row.mailingAddress.stateOrProvince;
+    // let query = name+' '+city+','+state;
     let cause = row.cause.causeName;
     
     return (
@@ -103,13 +113,26 @@ export class Contacts extends React.Component {
     const response = await fetch(`http://localhost:5000/recommendations/${id}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-    this.setState({header: 'Recommended For You:', loading:false});
-    this.setData(body);
+    this.setState({recs: body})
+    this.setData(this.state.recs);
+    this.setState({header: 'Recommended For You:'});
+    this.fetchInterestReccomendations();
 
+  }
+  fetchInterestReccomendations = async () => {
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    let recs = this.state.recs;
+    const response = await fetch(`http://localhost:5000/recommendations/real/${user.favorites}`);
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    recs = recs.concat(body)
+    this.setData(recs);
+    this.setState({header: 'Recommended For You:', loading:false});
   }
 
   _renderHeader() {
     return (
+      <View>
       <View style={styles.searchContainer}>
         <RkTextInput autoCapitalize='none'
                      autoCorrect={false}
@@ -118,8 +141,9 @@ export class Contacts extends React.Component {
                      rkType='row'
                      onSubmitEditing={this.fetchCharities}
                      placeholder='Find Charities...'/>
-        <Text style={styles.searchLabel}>{this.state.header}</Text>
       </View>
+        <RkText style={styles.searchLabel} rkType='primary'>{this.state.header}</RkText>
+      </View>              
     )
   }
 
@@ -136,9 +160,9 @@ export class Contacts extends React.Component {
 
   render() {
     const isLoading = this.state.loading;    
-    return (
+    return isLoading?<Spinner visible={this.state.loading} textContent={"Getting Recommendations..."} animation='fade' color='#000' textStyle={{color: '#000'}} overlayColor='#FFF' /> : (
         <View style={{ flex: 1 }}>
-        <Spinner visible={this.state.loading} textContent={"Getting Recommendations..."} animation='fade' color='#000' textStyle={{color: '#000'}} overlayColor='#FFF' />
+        
         <ListView
         style={styles.container}
         dataSource={this.state.data}
@@ -171,7 +195,7 @@ let styles = RkStyleSheet.create(theme => ({
     backgroundColor: theme.colors.screen.bold,
     width: Dimensions.get('window').width - 15,
     paddingVertical: 10,
-    height: 80,
+    height: 60,
 
   },
   searchLabel: {

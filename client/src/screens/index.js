@@ -10,3 +10,5 @@ export * from './walkthroughs';
 export * from './eCommerce';
 export * from './theme';
 export * from './subscribe';
+export * from './interests'
+export * from './logout'

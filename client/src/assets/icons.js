@@ -14,6 +14,7 @@ export const FontIcons = {
 
 export const FontAwesome = {
   heart: String.fromCharCode(61444),
+  emptyHeart: String.fromCharCode(61578),
   comment: String.fromCharCode(61669),
   user: String.fromCharCode(62144),
   twitter: String.fromCharCode(61593),

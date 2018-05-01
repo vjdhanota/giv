@@ -17,7 +17,7 @@ import {
 import {NavigationActions} from 'react-navigation';
 import {scale, scaleModerate, scaleVertical} from '../../utils/scale';
 
-let timeFrame = 500;
+let timeFrame = 300;
 
 export class SplashScreen extends React.Component {
 
