@@ -39,9 +39,6 @@ export class ProfileV1 extends React.Component {
       }
      this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     
-  
-    
-    
    
   }
 
@@ -80,10 +77,10 @@ getCharityInfo = async (ein) => {
 }
   getUser = async () => {
    const id = await AsyncStorage.getItem('user_id');
-   
     const response = await fetch(`http://localhost:5000/user/${id}`)    
     const body = await response.json();
     this.setState({userId: id})
+    await AsyncStorage.setItem('user', JSON.stringify(body));
     return body;
     
   }

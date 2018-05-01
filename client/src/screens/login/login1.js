@@ -59,7 +59,7 @@ export class LoginV1 extends React.Component {
   }
 
   handleLoginSubmit = async () => {
-    const response = await fetch(`http://10.250.174.173:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
+    const response = await fetch(`http://localhost:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
       try {
@@ -70,7 +70,7 @@ export class LoginV1 extends React.Component {
       //this is browse page
      const resetAction = NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'Contacts' })],
+      actions: [NavigationActions.navigate({ routeName: 'ProfileV1' })],
     });
     this.props.navigation.dispatch(resetAction);
     

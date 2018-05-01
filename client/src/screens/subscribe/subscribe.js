@@ -17,6 +17,7 @@ import formatNumber from "../../utils/textUtils";
 const Dimensions = require("Dimensions");
 import { AsyncStorage } from 'react-native';
 import {Dropdown} from 'react-native-material-dropdown';
+import { FormLabel, FormInput } from 'react-native-elements'
 
 export class Subscribe extends React.Component {
   static navigationOptions = {
@@ -96,11 +97,14 @@ export class Subscribe extends React.Component {
     // let dropdown = 
     return (
       <ScrollView style={styles.root}>
-        <View style={{marginTop: 15, marginLeft: 5}}>
-        <RkText style={{ marginLeft: 10}} rkType="primary">Amount</RkText>
+        <View style={{marginTop: 5, marginLeft: 5}}>
+        {/* <RkText style={{ marginLeft: 10}} rkType="primary">Amount</RkText>
         <View style={{flexDirection: "row"}}>
           <RkTextInput rkType='form' style={styles.moneyInput} value={this.state.amount} placeholder='Amount' onChange={(event) => this.setState({amount: event.nativeEvent.text})}/>
-        </View>
+        </View> */}
+
+        <RkText style={{ margin: 10}} rkType="primary">Amount</RkText>
+        <FormInput placeholder={'Amount'}  value={this.state.amount} onChangeText={(text) =>  this.setState({amount: text})}/>
           
         <View style={{marginTop: 60, marginLeft: 5}} >
           <RkText style={{marginLeft: 5}}  rkType="primary">Frequency</RkText>
@@ -134,15 +138,14 @@ let styles = RkStyleSheet.create(theme => ({
     border: 'none'
   },
   save: {
-    marginTop: 130,
+    marginTop: 110,
     width: "95%",
     marginLeft: 10,
     marginRight: 13,
     
   },
   dropdown: {
-    marginLeft: 5,
-    marginRight: 5
+    margin: 10
   },
   header: {
     alignItems: "center",

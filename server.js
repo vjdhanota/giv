@@ -135,7 +135,7 @@ app.get('/recommendations/:userid', (req,res,next) => {
     json: true,
   }, async function(error, response, body){
     var charities = [];
-    for(let i = 0; i < 20; i++) {
+    for(let i = 0; i < 3; i++) {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
@@ -146,6 +146,20 @@ app.get('/recommendations/:userid', (req,res,next) => {
 
   });
 });
+
+app.get('/recommendations/real/:favorites', async (req,res,next) => {
+  let favs = req.params.favorites.split(',').slice(0, req.params.favorites.split(',').length-1);
+  console.log(favs);
+    let charities = [];
+    for(let i = 0; i < favs.length; i++) {
+      const query = `https://api.data.charitynavigator.org/v2/Organizations?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935&pageSize=20&pageNum=1&rated=true&search=${favs[i]}`;
+      const json = await fetch(query).then(response => response.json()).then(resJson => resJson);      
+      charities.push(json[0]);
+      
+    }
+    res.send(charities);
+});
+
 
 app.get('/user', (req, res, next) => {
   models.User.findAll().then(user => res.send(user));
@@ -193,6 +207,18 @@ app.get('/user/sign-up/:info', (req, res, next) => {
     res.send(user);
   })
   
+});
+
+app.get('/user/favorites/add', (req, res, next) => {
+  let userId = req.param('userId'); 
+  let favorites = req.param('favorites');
+  console.log(userId, favorites)
+  let updateValues = { favorites: favorites };
+  User.update(updateValues, { where: { id: userId } }).then((result) => {
+      // here your result is simply an array with number of affected rows
+      res.send(result);
+      // [ 1 ]
+  })
 });
 
 app.get('/user/sign-in/:info', (req, res, next) => {

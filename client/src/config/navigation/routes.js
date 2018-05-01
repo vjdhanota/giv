@@ -107,6 +107,21 @@ export const MainRoutes = [
 // ]
   },
   {
+    id: 'Interests',
+    title: 'Interests View',
+    icon: FontIcons.article,
+    screen: Screens.Interests,
+    children: []
+//     children: [{
+//       id: 'Article',
+//       title: 'Article View',
+//       screen: Screens.Articles,
+//       children: []
+    
+//   },
+// ]
+  },
+  {
     id: 'Subscribe',
     title: 'Subscribe View',
     icon: FontIcons.article,
@@ -200,9 +215,9 @@ export const MainRoutes = [
 
 let menuRoutes = _.cloneDeep(MainRoutes);
 menuRoutes.unshift({
-  id: 'ProfileV1',
+  id: 'LoginV1',
   title: 'Start',
-  screen: Screens.ProfileV1,
+  screen: Screens.LoginV1,
   children: []
 },);
 

@@ -15,6 +15,7 @@ import {
 import {GradientButton} from '../../components/';
 import {scale, scaleModerate, scaleVertical} from '../../utils/scale';
 import { AsyncStorage } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 export class SignUp extends React.Component {
   static navigationOptions = {
@@ -38,12 +39,10 @@ export class SignUp extends React.Component {
   }
   handleSignUp = async () => {
     const response = await fetch(`http://localhost:5000/user/sign-up/${JSON.stringify(this.state.loginInfo)}`);
-    //const body = await response.json();
+    const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-    // console.log("before")
-    // await AsyncStorage.setItem('user_id', this.state.loginInfo.email);   
-    // console.log("HERE" + await AsyncStorage.getItem('user_id'));
-    this.props.navigation.navigate('Login1');
+  
+    await this.props.navigation.navigate('Interests', {user: body});
   }
   render() {
     let renderIcon = () => {

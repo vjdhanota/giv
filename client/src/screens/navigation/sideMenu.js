@@ -67,7 +67,7 @@ export class SideMenu extends React.Component {
           showsVerticalScrollIndicator={false}>
           <View style={[styles.container, styles.content]}>
             {this._renderIcon()}
-            <RkText rkType='logo'>giv</RkText>
+            <RkText style={styles.giv} rkType='primary'>giv</RkText>
           </View>
           {menu}
         </ScrollView>
@@ -77,6 +77,9 @@ export class SideMenu extends React.Component {
 }
 
 let styles = RkStyleSheet.create(theme => ({
+  giv: {
+    fontSize: 35,
+  },
   container: {
     height: 80,
     paddingHorizontal: 16,
@@ -94,5 +97,6 @@ let styles = RkStyleSheet.create(theme => ({
   },
   icon: {
     marginRight: 13,
+    zIndex: 5
   }
 }));

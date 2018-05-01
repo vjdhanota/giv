@@ -16,7 +16,7 @@ import {data} from '../../data';
 import {Avatar} from '../../components';
 import {SocialBar} from '../../components';
 let moment = require('moment');
-
+import { NavigationActions } from 'react-navigation';
 
 export class Article extends React.Component {
   static navigationOptions = {
@@ -52,7 +52,7 @@ export class Article extends React.Component {
     const charityId = this.data.ein
     const response = await fetch(`http://localhost:5000/charity/check?userId=${userId}&ein=${charityId}`)    
     const body = await response.json();
-   return body;    
+    return body;    
   }
   getImage = async (row) => {
     let city = row.mailingAddress.city;
@@ -71,7 +71,11 @@ export class Article extends React.Component {
   handleUnsubscribe = async () => {
     const response = await fetch(`http://localhost:5000/charity/delete/${this.state.subId}`);
     const body = await response.json()
-    this.props.navigation.navigate('ProfileV1');
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'ProfileV1' })],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
   render() {
     const subButton = this.state.isSubbed ? <RkButton style={{width: '90%'}} onPress={() => this.handleUnsubscribe()}>Unsubscribe</RkButton>
