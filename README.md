@@ -1,8 +1,8 @@
 # giv
 Giv Build Instructions
 Technologies Needed:
-• MySQL Server
-• PostgresSQL Server
+| MySQL Server |
+PostgresSQL Server |
 • XCode or Android simulator
 • Expo XDE
 • Node
