@@ -1,10 +1,12 @@
 # giv
 
+<b>Project Goal:</b>
 Our goal was to help connect people to new charities through an app, which allows people to scan valuable, concise information without having to spend time researching charities; as well as set up monthly or one time donations with the charities of their choice.
 
 
 <b>Giv Build Instructions</b>
-Technologies Needed:
+
+<b>Technologies Needed:</b>
 MySQL Server |
 PostgresSQL Server |
 XCode or Android simulator |
@@ -17,7 +19,7 @@ React Native NPM module (create-react-native-app) |
 Sequelize CLI NPM module |
 Nodemon NPM module |
 
-Installation:
+<b>Installation:</b>
 1. Clone the repository: git clone https://github.com/vjdhanota/giv.git
 2. Create a MySQL database by the name of ‘givdb’ with no password
 3. Run ‘yarn’ in terminal @ root level of repository and in ./client directory to install
