@@ -274,6 +274,12 @@ menuRoutes = menuRoutes.concat({
   screen: Screens.SignUp,
   children: []
 },
+{
+  id: 'Interests',
+  title: 'Interests',
+  screen: Screens.Interests,
+  children: []
+},
 )
 menuRoutes.unshift({
   id: 'LoginV1',

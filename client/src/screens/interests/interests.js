@@ -33,10 +33,11 @@ export class Interests extends React.Component {
   componentDidMount() {
     if(this.props.navigation.state.params) {
       this.setState({user: this.props.navigation.state.params.user[0]})
+      // this.setUser(this.props.navigation.state.params.user[0])
     }
   }
-  setUser = async () => {
-
+  setUser = (user) => {
+    //  await AsyncStorage.setItem('user_id', user.id);
   }
   handleInterestsSubmit = async () => {
     let interests = ''
@@ -45,16 +46,20 @@ export class Interests extends React.Component {
         interests+= this.state.interests[i] + ','
       }
     }
+    let user = await AsyncStorage.getItem('user')
+    user = JSON.parse(user);
+    user.favorites = interests;
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+    console.log('userininteee', user);
+    const id = user.id;
+    const response = await fetch(`http://172.20.10.2:5000/user/favorites/add?userId=${id}&favorites=${interests}`)  
 
-    const id = this.state.user.id;
-    const response = await fetch(`http://localhost:5000/user/favorites/add?userId=${id}&favorites=${interests}`)    
-    
-    // const resetAction = await NavigationActions.reset({
-    //   index: 0,
-    //   actions: [NavigationActions.navigate({ routeName: 'Contacts' })],
-    // });
-    // await qthis.props.navigation.dispatch(resetAction);
-    this.props.navigation.navigate('Contacts');
+    const resetAction = await NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Contacts', params: {user: user, favs: interests}})],
+    });
+    this.props.navigation.dispatch(resetAction);
+    // this.props.navigation.navigate('Contacts', {user: this.state.user});
     
   }
 

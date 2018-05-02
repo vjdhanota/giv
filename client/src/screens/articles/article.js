@@ -48,9 +48,9 @@ export class Article extends React.Component {
   }
 
   checkIfSubbed = async () => {
-    const userId = await AsyncStorage.getItem('user_id');
+    const userId = JSON.parse(await AsyncStorage.getItem('user')).id;
     const charityId = this.data.ein
-    const response = await fetch(`http://localhost:5000/charity/check?userId=${userId}&ein=${charityId}`)    
+    const response = await fetch(`http://172.20.10.2:5000/charity/check?userId=${userId}&ein=${charityId}`)    
     const body = await response.json();
     return body;    
   }
@@ -59,7 +59,7 @@ export class Article extends React.Component {
     let state = row.mailingAddress.stateOrProvince;
     let query = row.charityName+' '+city+','+state;
 
-    const response = await fetch(`http://localhost:5000/charityImage/${query}`);
+    const response = await fetch(`http://172.20.10.2:5000/charityImage/${query}`);
     this.setState({img: response._bodyText});
     console.log(this.state.img);
   }
@@ -69,7 +69,7 @@ export class Article extends React.Component {
   }
 
   handleUnsubscribe = async () => {
-    const response = await fetch(`http://localhost:5000/charity/delete/${this.state.subId}`);
+    const response = await fetch(`http://172.20.10.2:5000/charity/delete/${this.state.subId}`);
     const body = await response.json()
     const resetAction = NavigationActions.reset({
       index: 0,

@@ -135,26 +135,35 @@ app.get('/recommendations/:userid', (req,res,next) => {
     json: true,
   }, async function(error, response, body){
     var charities = [];
-    for(let i = 0; i < 3; i++) {
-      let ein = body.recommendations[i].thing;
-      const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
-      const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
-      
-      charities.push(json);
+    console.log(body)
+    if(body.recommendations) {
+      for(let i = 0; i < 3; i++) {
+        if(body.recommendations[i]) {
+          let ein = body.recommendations[i].thing;
+          const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
+          const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
+          charities.push(json);
+        }
+      }
+      console.log(charities)
+      res.send(charities);
+    } else {
+      res.send(false)
     }
-    res.send(charities);
 
   });
 });
 
 app.get('/recommendations/real/:favorites', async (req,res,next) => {
+  console.log(req.params.favorites)
   let favs = req.params.favorites.split(',').slice(0, req.params.favorites.split(',').length-1);
-  console.log(favs);
+  console.log(favs)
     let charities = [];
     for(let i = 0; i < favs.length; i++) {
+      let index = Math.floor(Math.random() * 5)
       const query = `https://api.data.charitynavigator.org/v2/Organizations?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935&pageSize=20&pageNum=1&rated=true&search=${favs[i]}`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);      
-      charities.push(json[0]);
+      charities.push(json[index]);
       
     }
     res.send(charities);
@@ -212,7 +221,6 @@ app.get('/user/sign-up/:info', (req, res, next) => {
 app.get('/user/favorites/add', (req, res, next) => {
   let userId = req.param('userId'); 
   let favorites = req.param('favorites');
-  console.log(userId, favorites)
   let updateValues = { favorites: favorites };
   User.update(updateValues, { where: { id: userId } }).then((result) => {
       // here your result is simply an array with number of affected rows
