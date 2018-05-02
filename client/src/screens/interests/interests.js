@@ -47,7 +47,7 @@ export class Interests extends React.Component {
     }
 
     const id = this.state.user.id;
-    const response = await fetch(`http://localhost:5000/user/favorites/add?userId=${id}&favorites=${interests}`)    
+    const response = await fetch(`http://172.20.10.2:5000/user/favorites/add?userId=${id}&favorites=${interests}`)    
     
     // const resetAction = await NavigationActions.reset({
     //   index: 0,

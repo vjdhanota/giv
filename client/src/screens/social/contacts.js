@@ -100,7 +100,7 @@ export class Contacts extends React.Component {
   }
 
   fetchCharities = async (e) => {
-    const response = await fetch(`http://localhost:5000/charity-search/${e.nativeEvent.text}`);
+    const response = await fetch(`http://172.20.10.2:5000/charity-search/${e.nativeEvent.text}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     this.setState({header: 'Search Results:'});
@@ -110,20 +110,23 @@ export class Contacts extends React.Component {
   fetchUserRecommendations = async () => {
      
     const id = await AsyncStorage.getItem('user_id');
-    const response = await fetch(`http://localhost:5000/recommendations/${id}`);
+    const response = await fetch(`http://172.20.10.2:5000/recommendations/${id}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     this.setState({recs: body})
     this.setData(this.state.recs);
     this.setState({header: 'Recommended For You:'});
+    console.log(body)
     this.fetchInterestReccomendations();
 
   }
   fetchInterestReccomendations = async () => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
+    console.log(user)
     let recs = this.state.recs;
-    const response = await fetch(`http://localhost:5000/recommendations/real/${user.favorites}`);
+    const response = await fetch(`http://172.20.10.2:5000/recommendations/real/${user.favorites}`);
     const body = await response.json();
+    console.log(body)
     if (response.status !== 200) throw Error(body.message);
     recs = recs.concat(body)
     this.setData(recs);

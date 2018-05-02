@@ -139,7 +139,6 @@ app.get('/recommendations/:userid', (req,res,next) => {
       let ein = body.recommendations[i].thing;
       const query = `https://api.data.charitynavigator.org/v2/Organizations/${ein}?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935`;
       const json = await fetch(query).then(response => response.json()).then(resJson => resJson);
-      
       charities.push(json);
     }
     res.send(charities);
@@ -149,7 +148,6 @@ app.get('/recommendations/:userid', (req,res,next) => {
 
 app.get('/recommendations/real/:favorites', async (req,res,next) => {
   let favs = req.params.favorites.split(',').slice(0, req.params.favorites.split(',').length-1);
-  console.log(favs);
     let charities = [];
     for(let i = 0; i < favs.length; i++) {
       const query = `https://api.data.charitynavigator.org/v2/Organizations?app_id=f0287ce6&app_key=72b6324e6d7c52799592dfa0c07a6935&pageSize=20&pageNum=1&rated=true&search=${favs[i]}`;

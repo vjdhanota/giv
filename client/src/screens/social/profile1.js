@@ -70,14 +70,14 @@ export class ProfileV1 extends React.Component {
   }
 
 getCharityInfo = async (ein) => {
-  const response = await fetch(`http://localhost:5000/charityinfo/${ein}`)    
+  const response = await fetch(`http://172.20.10.2:5000/charityinfo/${ein}`)    
   const body = await response.json();
 
  return body;
 }
   getUser = async () => {
    const id = await AsyncStorage.getItem('user_id');
-    const response = await fetch(`http://localhost:5000/user/${id}`)    
+    const response = await fetch(`http://172.20.10.2:5000/user/${id}`)    
     const body = await response.json();
     this.setState({userId: id})
     await AsyncStorage.setItem('user', JSON.stringify(body));
@@ -86,7 +86,7 @@ getCharityInfo = async (ein) => {
   }
 
   getSubscriptions = async () => {
-    const response = await fetch(`http://localhost:5000/subscriptions/${this.state.userId}`)    
+    const response = await fetch(`http://172.20.10.2:5000/subscriptions/${this.state.userId}`)    
     const body = await response.json();
   
    return body;

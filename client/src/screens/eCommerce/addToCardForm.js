@@ -3,6 +3,7 @@ import {
   View,
   Keyboard,
   TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   RkText,
@@ -43,7 +44,7 @@ export class AddToCardForm extends React.Component {
   handleCardAdd = async () => {
     const id = await AsyncStorage.getItem('user_id');
     const date = `${this.state.expireMonth}/${this.state.expireYear}`;
-    const response = await fetch(`http://localhost:5000/card/add?userId=${id}&name=${this.state.nameOnCard}&bank=CitiBank&amount=0&date=${date}&cardNo=${this.state.cardNumber}&type=visa&currency=usd`)
+    const response = await fetch(`http://172.20.10.2:5000/card/add?userId=${id}&name=${this.state.nameOnCard}&bank=CitiBank&amount=0&date=${date}&cardNo=${this.state.cardNumber}&type=visa&currency=usd`)
     const body = await response.json();
     this.props.navigation.state.params.addCard(body[0])
     this.props.navigation.goBack()    
@@ -58,10 +59,12 @@ export class AddToCardForm extends React.Component {
 
   render() {
     return (
-      <RkAvoidKeyboard
+      <KeyboardAvoidingView
         style={styles.screen}
-        onStartShouldSetResponder={(e) => true}
-        onResponderRelease={(e) => Keyboard.dismiss()}>
+        // onStartShouldSetResponder={(e) => true}
+        // onResponderRelease={(e) => Keyboard.dismiss()}
+        behavior="padding"
+        >
         <View style={[styles.formContent]}>
           <View>
             <View>
@@ -124,7 +127,7 @@ export class AddToCardForm extends React.Component {
             <GradientButton rkType='large' text='ADD CARD' onPress={this.handleCardAdd}/>
           </View>
         </View>
-      </RkAvoidKeyboard>
+      </KeyboardAvoidingView>
     )
   }
 }

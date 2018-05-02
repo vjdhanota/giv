@@ -36,7 +36,16 @@ export class LoginV1 extends React.Component {
   }
   handleLoggedInUser = async () => {
     const id = await AsyncStorage.getItem('user_id');
+    
     if(id) {
+      const user = await fetch(`http://172.20.10.2:5000/user/${id}`);
+      const userJson = await user.json();
+      try {
+        await AsyncStorage.setItem('user', JSON.stringify(userJson));
+      } catch(e) {
+        console.log(e)
+      }
+
       const resetAction = NavigationActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: 'ProfileV1' })],
@@ -59,7 +68,7 @@ export class LoginV1 extends React.Component {
   }
 
   handleLoginSubmit = async () => {
-    const response = await fetch(`http://localhost:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
+    const response = await fetch(`http://172.20.10.2:5000/user/sign-in/${JSON.stringify(this.state.loginInfo)}`);    
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
       try {

@@ -2,7 +2,8 @@ import React from 'react';
 import {
   View,
   Image,
-  Keyboard
+  Keyboard,
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   RkButton,
@@ -38,7 +39,7 @@ export class SignUp extends React.Component {
     console.log(await AsyncStorage.getItem('user_id'));
   }
   handleSignUp = async () => {
-    const response = await fetch(`http://localhost:5000/user/sign-up/${JSON.stringify(this.state.loginInfo)}`);
+    const response = await fetch(`http://172.20.10.2:5000/user/sign-up/${JSON.stringify(this.state.loginInfo)}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
   
@@ -52,10 +53,12 @@ export class SignUp extends React.Component {
       return <Image style={styles.image} source={require('../../assets/images/logoDark.png')}/>
     };
     return (
-      <RkAvoidKeyboard
+      <KeyboardAvoidingView
         style={styles.screen}
-        onStartShouldSetResponder={ (e) => true}
-        onResponderRelease={ (e) => Keyboard.dismiss()}>
+        // onStartShouldSetResponder={ (e) => true}
+        // onResponderRelease={ (e) => Keyboard.dismiss()}
+        behavior="padding"
+        >
         <View style={{alignItems: 'center'}}>
           {/* {renderIcon()} */}
           <RkText rkType='h1'>Registration</RkText>
@@ -71,13 +74,13 @@ export class SignUp extends React.Component {
           <View style={styles.footer}>
             <View style={styles.textRow}>
               <RkText rkType='primary3'>Already have an account?</RkText>
-              <RkButton rkType='clear'  onPress={() => this.props.navigation.navigate('Login1')}>
+              <RkButton rkType='clear'  onPress={() => this.props.navigation.navigate('LoginV1')}>
                 <RkText rkType='header6'> Sign in now </RkText>
               </RkButton>
             </View>
           </View>
         </View>
-      </RkAvoidKeyboard>
+      </KeyboardAvoidingView>
     )
   }
 }

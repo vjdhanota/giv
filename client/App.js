@@ -19,7 +19,9 @@ import {
   RkTextInput
 } from 'react-native-ui-kitten';
 import {GradientButton} from './src/components/';
-
+import {
+  SafeAreaView
+} from 'react-native';
 bootstrap();
 data.populateData();
 
@@ -103,7 +105,7 @@ export default class App extends React.Component {
     // );
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, paddingTop: 37,backgroundColor:'#fc4d21'}}>
         <KittenApp
           onNavigationStateChange={(prevState, currentState) => {
             const currentScreen = getCurrentRouteName(currentState);
