@@ -4,6 +4,7 @@
 Our goal was to help connect people to new charities through an app, which allows people to scan valuable, concise information without having to spend time researching charities; as well as set up monthly or one time donations with the charities of their choice.
 
 <b>Link to demo:</b> https://youtu.be/zL6krWjkF3o
+
 <b>Link to Github Code Repository:</b> https://github.com/vjdhanota/giv
 
 <b>Giv Build Instructions</b>
