@@ -3,7 +3,6 @@
 <b>Project Goal:</b>
 Our goal was to help connect people to new charities through an app, which allows people to scan valuable, concise information without having to spend time researching charities; as well as set up monthly or one time donations with the charities of their choice.
 
-
 <b>Giv Build Instructions</b>
 
 <b>Technologies Needed:</b>
