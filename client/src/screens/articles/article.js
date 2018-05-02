@@ -48,7 +48,7 @@ export class Article extends React.Component {
   }
 
   checkIfSubbed = async () => {
-    const userId = await AsyncStorage.getItem('user_id');
+    const userId = JSON.parse(await AsyncStorage.getItem('user')).id;
     const charityId = this.data.ein
     const response = await fetch(`http://172.20.10.2:5000/charity/check?userId=${userId}&ein=${charityId}`)    
     const body = await response.json();

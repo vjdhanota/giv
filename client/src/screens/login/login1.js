@@ -3,7 +3,9 @@ import {
   View,
   Image,
   Dimensions,
-  Keyboard
+  Keyboard,
+  KeyboardAvoidingView
+  
 } from 'react-native';
 import {
   RkButton,
@@ -35,10 +37,10 @@ export class LoginV1 extends React.Component {
     this.handleLoggedInUser();    
   }
   handleLoggedInUser = async () => {
-    const id = await AsyncStorage.getItem('user_id');
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
     
-    if(id) {
-      const user = await fetch(`http://172.20.10.2:5000/user/${id}`);
+    if(user) {
+      const user = await fetch(`http://172.20.10.2:5000/user/${user.id}`);
       const userJson = await user.json();
       try {
         await AsyncStorage.setItem('user', JSON.stringify(userJson));
@@ -72,7 +74,8 @@ export class LoginV1 extends React.Component {
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
       try {
-        await AsyncStorage.setItem('user_id', body.id.toString());
+        console.log(body)
+        await AsyncStorage.setItem('user', JSON.stringify(body));
       } catch (err) {
         console.log(err);
       }
@@ -91,13 +94,15 @@ export class LoginV1 extends React.Component {
     let image = this._renderImage();
 
     return (
-      <RkAvoidKeyboard
-        onStartShouldSetResponder={ (e) => true}
-        onResponderRelease={ (e) => Keyboard.dismiss()}
-        style={styles.screen}>
+      <KeyboardAvoidingView
+      style={styles.screen}
+      // onStartShouldSetResponder={ (e) => true}
+      // onResponderRelease={ (e) => Keyboard.dismiss()}
+      behavior="padding"
+      >
         {image}
         <View style={styles.container}>
-          <RkText rkType='light' style={styles.hero}>giv</RkText>
+          <RkText rkType='primary' style={styles.hero}>giv</RkText>
           <RkTextInput rkType='rounded' placeholder='Email' onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, email: event.nativeEvent.text}})}/>
           <RkTextInput rkType='rounded' placeholder='Password' secureTextEntry={true} onChange={(event) => this.setState({loginInfo: {...this.state.loginInfo, password: event.nativeEvent.text}})}/>
           <GradientButton onPress={this.handleLoginSubmit} rkType='large' style={styles.save} text='LOGIN'/>
@@ -111,7 +116,7 @@ export class LoginV1 extends React.Component {
             </View>
           </View>
         </View>
-      </RkAvoidKeyboard>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -135,13 +140,13 @@ let styles = RkStyleSheet.create(theme => ({
     paddingBottom: scaleVertical(22),
     // alignItems: 'center',
     // flex: -1
-    marginTop: 300,
+    marginTop: 80,
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1
   },
   footer: {
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
     flex: 1
   },
   buttons: {

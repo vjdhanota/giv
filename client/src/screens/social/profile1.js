@@ -76,7 +76,7 @@ getCharityInfo = async (ein) => {
  return body;
 }
   getUser = async () => {
-   const id = await AsyncStorage.getItem('user_id');
+   const id = JSON.parse(await AsyncStorage.getItem('user')).id;
     const response = await fetch(`http://172.20.10.2:5000/user/${id}`)    
     const body = await response.json();
     this.setState({userId: id})
@@ -112,6 +112,7 @@ getCharityInfo = async (ein) => {
         <View style={stylez.text}>
           <RkText>
             <RkText rkType='header6'>{row.subInfo.charityName}</RkText>
+            {"\n"}
             <RkText>
               <RkText rkType='secondary2'> Frequency: </RkText>
               <RkText rkType='primary2'> {row.frequency}</RkText>

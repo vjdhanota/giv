@@ -18,6 +18,7 @@ const Dimensions = require("Dimensions");
 import { AsyncStorage } from 'react-native';
 import {Dropdown} from 'react-native-material-dropdown';
 import { FormLabel, FormInput } from 'react-native-elements'
+import { NavigationActions } from 'react-navigation';
 
 export class Subscribe extends React.Component {
   static navigationOptions = {
@@ -57,13 +58,13 @@ export class Subscribe extends React.Component {
   }
 
   addCard = (card) => {
-    console.log(card);
-    this.setState({cardDropdown: [...this.state.cardDropdown, {value: `${card.name}'s card ending in ${card.cardNo}`}]})
-    this.state.cardsDict[`${card.name}'s card ending in ${card.cardNo}`] = card;
+    const lastFour = card.cardNo.substr(card.cardNo.length-4)    
+    this.setState({cardDropdown: [...this.state.cardDropdown, {value: `${card.name}'s card ending in ${lastFour}`}]})
+    this.state.cardsDict[`${card.name}'s card ending in ${lastFour}`] = card;
   }
 
   getUserCards = async () => {
-    const id = await AsyncStorage.getItem('user_id');
+    const id = JSON.parse(await AsyncStorage.getItem('user')).id;
     const response = await fetch(`http://172.20.10.2:5000/cards/${id}`)    
     const body = await response.json();
     return body;
@@ -73,12 +74,16 @@ export class Subscribe extends React.Component {
     
   
   handleSubscribe = async () => {
-    const id = await AsyncStorage.getItem('user_id');
+    const id = JSON.parse(await AsyncStorage.getItem('user')).id;
     let req = {charity_ein: this.state.charity.ein, frequency: this.state.frequency, amount: this.state.amount, userId: id}
     const response = await fetch(`http://172.20.10.2:5000/subscribe/${JSON.stringify(req)}`)    
     const body = await response.json();
 
-    this.props.navigation.navigate('ProfileV1');    
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'ProfileV1' })],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   render() {
@@ -94,7 +99,7 @@ export class Subscribe extends React.Component {
       value:'Yearly',
     }]
 
-    let cards = this.state.cardDropdown.length > 0 ? this.state.cardDropdown : [{value: 'card'}]
+    let cards = this.state.cardDropdown.length > 0 ? this.state.cardDropdown : [{value: 'Please add a card...'}]
     // let dropdown = 
     return (
       <ScrollView style={styles.root}>

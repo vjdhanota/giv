@@ -33,7 +33,6 @@ export class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
-    this.print();
   }
   print = async () => {
     console.log(await AsyncStorage.getItem('user_id'));
@@ -42,8 +41,18 @@ export class SignUp extends React.Component {
     const response = await fetch(`http://172.20.10.2:5000/user/sign-up/${JSON.stringify(this.state.loginInfo)}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-  
-    await this.props.navigation.navigate('Interests', {user: body});
+    try {
+      await AsyncStorage.setItem('user',JSON.stringify(body[0]))
+    }catch(e) {
+      console.log(e)
+    }
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Interests', params:{user:body} })],
+    });
+    this.props.navigation.dispatch(resetAction);
+    // console.log(body)
+    // this.props.navigation.navigate('Interests', {user: body[0]});
   }
   render() {
     let renderIcon = () => {

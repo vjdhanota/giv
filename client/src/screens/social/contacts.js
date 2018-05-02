@@ -13,7 +13,8 @@ import {
   RkStyleSheet,
   RkText,
   RkTextInput,
-  RkCard
+  RkCard,
+  RkTheme
 } from 'react-native-ui-kitten';
 import {data} from '../../data';
 import {Avatar} from '../../components/avatar';
@@ -30,7 +31,6 @@ export class Contacts extends React.Component {
   constructor(props) {
     super(props);
     this.charityarticles = data.getcharityArticles();
-    this.getUser().then(user => this.setState({user}))
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       data: ds.cloneWithRows(this.charityarticles),
@@ -39,15 +39,40 @@ export class Contacts extends React.Component {
       loading: true,
       recs: []
     };
-
+    
     this.filter = this._filter.bind(this);
     this.setData = this._setData.bind(this);
     this.addData = this._addData.bind(this);
-    this.fetchUserRecommendations();
     this.renderHeader = this._renderHeader.bind(this);
     this.renderRow = this._renderRow.bind(this);
 
   }
+  componentDidMount() {
+    // this.getUser().then(user => this.setState({user: user}))   
+    let params = this.props.navigation.state.params 
+    if(params && params.user) {
+      this.setState({user: params.user}, () => {
+        this.fetchUserRecommendations();
+      })
+    } else {
+      this.getUser().then(user => this.setState({user: user}, () => {
+        console.log('found user.. getting recs')
+        this.fetchUserRecommendations();
+      })
+    );
+            
+    }
+
+    if(params && params.favs) {
+      // first time user is signing in
+      this.setState({interests: params.favs});
+    } else {
+      this.getUser().then(user => this.setState({interests: user.favorites}))
+    }
+
+    
+  } 
+
   getUser = async () => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
     return user;
@@ -108,28 +133,31 @@ export class Contacts extends React.Component {
   }
 
   fetchUserRecommendations = async () => {
-     
-    const id = await AsyncStorage.getItem('user_id');
+     console.log(this.state)
+    const id = this.state.user.id
     const response = await fetch(`http://172.20.10.2:5000/recommendations/${id}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
+    if(body) {
+      
     this.setState({recs: body})
     this.setData(this.state.recs);
+    }
     this.setState({header: 'Recommended For You:'});
     console.log(body)
     this.fetchInterestReccomendations();
 
   }
   fetchInterestReccomendations = async () => {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
-    console.log(user)
+    const interests = this.state.interests
     let recs = this.state.recs;
-    const response = await fetch(`http://172.20.10.2:5000/recommendations/real/${user.favorites}`);
+    const response = await fetch(`http://172.20.10.2:5000/recommendations/real/${interests}`);
     const body = await response.json();
     console.log(body)
     if (response.status !== 200) throw Error(body.message);
-    recs = recs.concat(body)
-    this.setData(recs);
+      recs = recs.concat(body)
+      this.setData(recs);
+    
     this.setState({header: 'Recommended For You:', loading:false});
   }
 
@@ -163,7 +191,11 @@ export class Contacts extends React.Component {
 
   render() {
     const isLoading = this.state.loading;    
-    return isLoading?<Spinner visible={this.state.loading} textContent={"Getting Recommendations..."} animation='fade' color='#000' textStyle={{color: '#000'}} overlayColor='#FFF' /> : (
+    const spinner = RkTheme.current.name == 'light' ? 
+      <Spinner visible={this.state.loading} textContent={"Getting Recommendations..."} animation='fade' color='#000' textStyle={{color: '#000'}} overlayColor='#FFF' /> 
+      : <Spinner visible={this.state.loading} textContent={"Getting Recommendations..."} animation='fade' color='#fff' textStyle={{color: '#fff'}} overlayColor='#000' />
+
+    return isLoading? spinner : (
         <View style={{ flex: 1 }}>
         
         <ListView

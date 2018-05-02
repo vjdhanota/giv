@@ -16,7 +16,8 @@ console.disableYellowBox = true;
 import {
   RkStyleSheet,
   RkText,
-  RkTextInput
+  RkTextInput,
+  RkTheme
 } from 'react-native-ui-kitten';
 import {GradientButton} from './src/components/';
 import {
@@ -53,7 +54,14 @@ const KittenApp = StackNavigator({
       })
   }
 }, {
-  headerMode: 'none',
+  borderBottomWidth: 0,
+  shadowOpacity: 0,
+  shadowOffset: {
+    height: 0,
+  },
+  shadowRadius: 0,
+  elevation: 0,
+  headerMode: 'none' 
 });
 
 export default class App extends React.Component {
@@ -89,23 +97,9 @@ export default class App extends React.Component {
     if (!this.state.loaded) {
       return <AppLoading />;
     }
-
-    // return (
-    // <View style={styles.view}>
-
-    //   <RkTextInput autoCapitalize='none'
-    //                  autoCorrect={false}
-    //                  onChange={(event) => this.setState({currentSearch: event.nativeEvent.text})}
-    //                  onSubmit={this.handleSearchSubmit}
-    //                   // label={<RkText rkType='awesome'>{FontAwesome.search}</RkText>}
-    //                  rkType='row'
-    //                  placeholder='Search'/>
-    // <GradientButton rkType='large' text='SIGN UP' onPress={this.handleSearchSubmit}/>
-    // </View>
-    // );
-
+    statusColor = RkTheme.current.name == 'light' ? '#fff' : '#fff'
     return (
-      <View style={{flex: 1, paddingTop: 37,backgroundColor:'#fc4d21'}}>
+      <View style={{flex: 1, paddingTop: 33,backgroundColor:'#fff'}}>
         <KittenApp
           onNavigationStateChange={(prevState, currentState) => {
             const currentScreen = getCurrentRouteName(currentState);

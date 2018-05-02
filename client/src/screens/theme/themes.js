@@ -46,7 +46,7 @@ export class Themes extends React.Component {
             text='APPLY'
             onPress={() => {
               RkTheme.setTheme(DarkKittenTheme);
-              StatusBar.setBarStyle('light-content', true);
+              StatusBar.setBarStyle('dark-content', true);
               Platform.OS == 'android' && StatusBar.setBackgroundColor(DarkKittenTheme.colors.screen.base);
             }}/>
 
