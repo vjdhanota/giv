@@ -3,7 +3,7 @@
 Our goal was to help connect people to new charities through an app, which allows people to scan valuable, concise information without having to spend time researching charities; as well as set up monthly or one time donations with the charities of their choice.
 
 
-Giv Build Instructions
+<b>Giv Build Instructions</b>
 Technologies Needed:
 MySQL Server |
 PostgresSQL Server |
