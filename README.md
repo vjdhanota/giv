@@ -1,17 +1,17 @@
 # giv
 Giv Build Instructions
 Technologies Needed:
-| MySQL Server |
+MySQL Server |
 PostgresSQL Server |
-• XCode or Android simulator
-• Expo XDE
-• Node
-• NPM
-• YARN Package Manager
-• HapiGER NPM module
-• React Native NPM module (create-react-native-app)
-• Sequelize CLI NPM module
-• Nodemon NPM module
+XCode or Android simulator |
+Expo XDE |
+Node |
+NPM |
+YARN Package Manager |
+HapiGER NPM module |
+React Native NPM module (create-react-native-app) |
+Sequelize CLI NPM module |
+Nodemon NPM module |
 
 Installation:
 1. Clone the repository: git clone https://github.com/vjdhanota/giv.git
